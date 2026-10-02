@@ -1,0 +1,1492 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#C24E7E">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Дневник">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<title>Дневник мамы</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Literata:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#FBF4F6; --card:#FFFFFF; --ink:#3B2A45; --ink-2:#7B6A86; --line:#EADFE6; --line-2:#D6C6D2;
+  --accent:#C24E7E; --on-accent:#FFFFFF;
+  --rose:#F7D4DF; --peach:#FFD9C7; --butter:#FFE8A8; --mint:#CBEBDD; --sky:#CFE3F5; --lav:#DDD2F4;
+  --warn:#B4432F; --ok:#2E7D5B; --tint:#F4E9EF; --shadow:0 8px 22px rgba(90,40,100,.10);
+  --sans:'Nunito','Segoe UI','Helvetica Neue',Arial,sans-serif;
+  --serif:'Literata','Georgia','Times New Roman',serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#1B1420; --card:#271D2D; --ink:#F3E9F4; --ink-2:#BBA9C4; --line:#3A2D42; --line-2:#54415E;
+    --accent:#F08CB4; --on-accent:#2A1020;
+    --rose:#5A3346; --peach:#5C3D36; --butter:#5A4C2A; --mint:#2D4F44; --sky:#2D4660; --lav:#43375F;
+    --warn:#F0937F; --ok:#7ED0A5; --tint:#2F2336; --shadow:none;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#1B1420; --card:#271D2D; --ink:#F3E9F4; --ink-2:#BBA9C4; --line:#3A2D42; --line-2:#54415E;
+  --accent:#F08CB4; --on-accent:#2A1020;
+  --rose:#5A3346; --peach:#5C3D36; --butter:#5A4C2A; --mint:#2D4F44; --sky:#2D4660; --lav:#43375F;
+  --warn:#F0937F; --ok:#7ED0A5; --tint:#2F2336; --shadow:none;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px);-webkit-text-size-adjust:100%}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.5}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:10px}
+h1,h2,h3{font-weight:800;line-height:1.2;margin:0}
+h1{font-size:26px} h2{font-size:20px} h3{font-size:16px}
+p{margin:0 0 .6em}
+.wrap{max-width:640px;margin:0 auto;padding:0 16px 130px}
+
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--paper)}
+.top-in{max-width:640px;margin:0 auto;padding:12px 16px 8px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{font-weight:800;font-size:19px}
+.top-r{display:flex;align-items:center;gap:10px}
+.pill{font-size:12px;font-weight:700;padding:3px 10px;border-radius:99px;background:var(--tint);color:var(--ink-2)}
+.pill.cloud{background:var(--mint);color:var(--ink)}
+.icon-btn{width:40px;height:40px;border-radius:50%;border:0;background:var(--card);box-shadow:var(--shadow);display:grid;place-items:center}
+.icon-btn svg{width:20px;height:20px}
+
+.banner{margin:6px 0 0;padding:12px 14px;border-radius:16px;background:var(--butter);font-size:14px}
+.banner button{background:none;border:0;padding:0;font-weight:700;text-decoration:underline;font-size:14px}
+.card{background:var(--card);border-radius:22px;padding:16px;box-shadow:var(--shadow);margin-top:16px}
+
+.greet{margin:10px 0 0;font-size:15px;color:var(--ink-2);font-weight:600}
+.hero{position:relative;overflow:hidden;margin-top:10px;border-radius:30px;padding:22px 20px 18px;background:linear-gradient(145deg,var(--peach),var(--lav))}
+.hero::before{content:'';position:absolute;right:-40px;top:-50px;width:190px;height:190px;border-radius:50%;background:rgba(255,255,255,.28)}
+.hero::after{content:'';position:absolute;left:-30px;bottom:-60px;width:150px;height:150px;border-radius:50%;background:rgba(255,255,255,.18)}
+.hero>*{position:relative;z-index:1}
+.hero-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.hero .small{font-size:14px;font-weight:700;opacity:.8}
+.num{font-family:var(--serif);font-weight:700;font-size:clamp(84px,26vw,120px);line-height:.9;letter-spacing:-.04em}
+.hero .u{font-weight:800;font-size:19px;margin-top:2px}
+.fruit{font-size:clamp(64px,20vw,92px);line-height:1;filter:drop-shadow(0 6px 8px rgba(0,0,0,.12))}
+.hero-line{margin:14px 0 10px;font-weight:700}
+.prog{height:10px;border-radius:99px;background:rgba(255,255,255,.5);overflow:hidden}
+.prog i{display:block;height:100%;border-radius:99px;background:var(--accent)}
+.prog-l{font-size:13px;font-weight:700;margin-top:6px;opacity:.85}
+.sup{font-family:var(--serif);font-style:italic;color:var(--ink-2);margin:14px 4px 0}
+
+.wks{display:flex;gap:7px;overflow-x:auto;margin:14px -16px 0;padding:6px 16px 10px;scrollbar-width:none}
+.wks::-webkit-scrollbar{display:none}
+.wk{flex:0 0 40px;height:40px;border-radius:50%;border:2px solid transparent;font-weight:800;font-size:14px;position:relative;background:var(--rose)}
+.wk.t2{background:var(--sky)} .wk.t3{background:var(--butter)}
+.wk.cur{background:var(--accent);color:var(--on-accent)}
+.wk.sel{border-color:var(--ink)}
+.wk .d{position:absolute;bottom:-1px;left:50%;width:7px;height:7px;margin-left:-3.5px;border-radius:50%;background:var(--accent);border:2px solid var(--paper);box-sizing:content-box}
+.wk.cur .d{background:var(--on-accent);border-color:var(--accent)}
+.hintline{font-size:13px;color:var(--ink-2);margin:0 2px}
+.preview-note{margin:8px 2px 0;font-size:14px;color:var(--ink-2)}
+.preview-note button{background:none;border:0;color:var(--accent);padding:0;font-weight:700;text-decoration:underline}
+
+.btn{border:2px solid var(--line-2);background:transparent;border-radius:99px;padding:10px 18px;font-weight:700}
+.btn.pri{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
+.btn.big{width:100%;padding:14px 18px;font-size:17px;margin-top:16px}
+.btn.sm{padding:6px 14px;font-size:14px}
+.btn.danger{color:var(--warn);border-color:var(--warn)}
+.btn:disabled{opacity:.5;cursor:default}
+.sec-h{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px}
+.list{list-style:none;margin:0;padding:0}
+.row{display:block;width:100%;text-align:left;background:none;border:0;border-top:1px solid var(--line);padding:12px 0 12px 16px;position:relative}
+.row:first-child{border-top:0}
+.row::before{content:'';position:absolute;left:0;top:12px;bottom:12px;width:5px;border-radius:3px;background:var(--bar,var(--line-2))}
+.row.k-vaccine{--bar:var(--accent)} .row.k-exam{--bar:#E8B93C} .row.k-prep{--bar:#9E86D8} .row.k-tip{--bar:#6FB3DA}
+.row .t{font-weight:800}
+.row .m{font-size:14px;color:var(--ink-2)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.chip{font-size:12px;font-weight:700;padding:2px 10px;border-radius:99px;background:var(--tint);color:var(--ink-2);border:0}
+.chip.now{background:var(--accent);color:var(--on-accent)}
+.chip.warn{background:transparent;border:1.5px solid var(--warn);color:var(--warn)}
+.chip.ok{background:var(--mint);color:var(--ink)}
+.chip.src{border:1.5px dashed var(--line-2);background:transparent}
+.chip.tg{border:2px solid var(--line-2);background:transparent;font-size:14px;padding:5px 13px;color:var(--ink)}
+.chip.tg.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.empty{padding:18px 0;color:var(--ink-2)}
+
+.q{border-radius:22px;padding:16px;margin-top:16px;background:var(--lav)}
+.q .qt{font-family:var(--serif);font-style:italic;font-size:18px;margin:4px 0 12px}
+.vis{border-radius:22px;padding:14px 16px;margin-top:16px;background:var(--mint);display:flex;gap:12px;align-items:center}
+.vis .e{font-size:30px}
+
+.month{font-weight:800;font-size:15px;color:var(--ink-2);margin:22px 0 4px}
+.entry{display:grid;grid-template-columns:58px 1fr;gap:12px;padding:14px 0;border-top:1px solid var(--line)}
+.entry .dt{text-align:center;background:var(--rose);border-radius:16px;padding:6px 0;align-self:start}
+.entry .dt b{display:block;font-family:var(--serif);font-size:24px;line-height:1.1}
+.entry .dt span{font-size:12px;font-weight:700;color:var(--ink-2)}
+.entry .tx{white-space:pre-wrap;overflow-wrap:anywhere}
+.entry .wk2{font-size:13px;font-weight:700;color:var(--ink-2);margin-bottom:2px}
+.photos{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px}
+.photos img,.ph{width:100%;aspect-ratio:1;object-fit:cover;border-radius:14px;background:var(--tint);display:block}
+.acts{display:flex;gap:16px;margin-top:8px}
+.acts button{background:none;border:0;padding:0;color:var(--ink-2);font-size:14px;font-weight:600;text-decoration:underline}
+.acts button.dg{color:var(--warn)}
+
+.seg{display:flex;background:var(--tint);border-radius:99px;padding:4px;margin:12px 0 4px}
+.seg button{flex:1;background:none;border:0;padding:8px 6px;font-size:15px;font-weight:700;border-radius:99px}
+.seg button[aria-pressed="true"]{background:var(--card);box-shadow:var(--shadow)}
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:6;background:var(--card);border-radius:22px 22px 0 0;box-shadow:0 -6px 20px rgba(90,40,100,.10);padding-bottom:env(safe-area-inset-bottom,0px)}
+.tabs-in{max-width:640px;margin:0 auto;display:grid;grid-template-columns:repeat(5,1fr)}
+.tabs button{background:none;border:0;padding:10px 0 8px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11.5px;font-weight:700;color:var(--ink-2)}
+.tabs button svg{width:24px;height:24px}
+.tabs button[aria-current="page"]{color:var(--accent)}
+
+.det{padding:4px 0 14px 16px;font-size:15px}
+.det .f{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.det .f.one{grid-template-columns:1fr}
+label.fl{display:block;font-size:13px;font-weight:700;color:var(--ink-2)}
+input[type=text],input[type=date],input[type=time],input[type=number],select,textarea{width:100%;border:2px solid var(--line);background:var(--card);border-radius:14px;padding:10px 12px;margin-top:3px;color:var(--ink)}
+textarea{min-height:130px;resize:vertical}
+.chk{display:flex;gap:10px;align-items:center;margin-top:8px;font-weight:600}
+.chk input{width:22px;height:22px;accent-color:var(--accent)}
+
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.tile{border:0;border-radius:24px;padding:16px 14px;text-align:left;min-height:112px;display:flex;flex-direction:column;justify-content:space-between;background:var(--rose)}
+.tile:nth-child(6n+2){background:var(--mint)} .tile:nth-child(6n+3){background:var(--butter)}
+.tile:nth-child(6n+4){background:var(--sky)} .tile:nth-child(6n+5){background:var(--lav)} .tile:nth-child(6n+6){background:var(--peach)}
+.tile .e{font-size:30px;line-height:1}
+.tile b{display:block;font-weight:800;font-size:16px}
+.tile span{font-size:13px;color:var(--ink-2);font-weight:600}
+.back{background:none;border:0;padding:6px 0;margin-top:8px;font-weight:700;color:var(--accent)}
+.bigbtn{display:block;margin:18px auto 6px;width:190px;height:190px;border-radius:50%;border:0;background:radial-gradient(circle at 35% 30%,var(--rose),var(--accent));color:var(--on-accent);font-weight:800;font-size:20px;box-shadow:var(--shadow)}
+.bigbtn small{display:block;font-size:44px;font-family:var(--serif);line-height:1.1}
+.bigbtn.run{background:radial-gradient(circle at 35% 30%,var(--butter),#E39A2D);color:#2A1A00}
+.centered{text-align:center}
+.mood{display:flex;gap:8px;margin-top:10px}
+.mood button{flex:1;font-size:26px;padding:6px 0;border-radius:16px;border:2px solid var(--line);background:transparent}
+.mood button.on{border-color:var(--accent);background:var(--tint)}
+.vote{display:inline-flex;align-items:center;gap:6px;border:2px solid var(--line-2);border-radius:99px;background:transparent;padding:4px 12px;font-weight:800}
+.vote.on{background:var(--rose);border-color:var(--accent)}
+svg.chart{width:100%;height:auto;display:block}
+svg.chart .ln{fill:none;stroke:var(--accent);stroke-width:3;stroke-linejoin:round;stroke-linecap:round}
+svg.chart .pt{fill:var(--card);stroke:var(--accent);stroke-width:3}
+svg.chart text{fill:var(--ink-2);font-size:11px;font-family:var(--sans)}
+svg.chart .gl{stroke:var(--line);stroke-width:1}
+
+.ov{position:fixed;inset:0;background:rgba(40,15,50,.5);z-index:20;display:flex;align-items:flex-end;justify-content:center}
+.sheet{background:var(--paper);width:100%;max-width:640px;max-height:92%;overflow:auto;border-radius:28px 28px 0 0;padding:18px 18px calc(24px + env(safe-area-inset-bottom,0px));animation:up .22s ease-out}
+@keyframes up{from{transform:translateY(24px);opacity:.4}to{transform:none;opacity:1}}
+.sheet-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.thumbs{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.thumb{position:relative;width:76px;height:76px}
+.thumb img{width:100%;height:100%;object-fit:cover;border-radius:14px;background:var(--tint)}
+.thumb button{position:absolute;top:-6px;right:-6px;width:24px;height:24px;border-radius:50%;border:0;background:var(--ink);color:var(--paper);line-height:1}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(88px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--paper);padding:10px 16px;border-radius:99px;z-index:30;max-width:90%;font-size:14px;font-weight:600}
+.note{font-size:13px;color:var(--ink-2)}
+.stage{border-radius:22px;padding:16px;margin-top:14px;background:var(--b,var(--tint))}
+.stage ul{margin:4px 0 10px;padding-left:20px}
+.stage li{margin:3px 0}
+.onb{padding-top:22px}
+.onb .emoji{font-size:56px}
+.onb h1{margin:8px 0 10px}
+.onb .field{margin-top:14px}
+.hint{font-size:13px;color:var(--ink-2);margin-top:6px}
+.bar{height:10px;border-radius:99px;background:var(--tint);overflow:hidden;margin:6px 0 4px}
+.bar i{display:block;height:100%;background:var(--accent);border-radius:99px}
+.btn{min-height:44px}
+.btn.sm{min-height:36px}
+.ph{cursor:zoom-in}
+.fab-wrap{position:fixed;right:16px;bottom:calc(76px + env(safe-area-inset-bottom,0px));z-index:7;display:flex;flex-direction:column;align-items:flex-end;gap:10px}
+.fab{width:58px;height:58px;border-radius:50%;border:0;background:var(--accent);color:var(--on-accent);font-size:32px;line-height:1;box-shadow:0 8px 22px rgba(194,78,126,.45)}
+.fab-item{display:flex;align-items:center;gap:10px;border:0;background:var(--card);box-shadow:var(--shadow);border-radius:99px;padding:10px 18px 10px 12px;font-weight:800;min-height:48px}
+.fab-item span{font-size:22px}
+.lb{position:fixed;inset:0;background:rgba(15,5,20,.94);z-index:40;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}
+.lb img{max-width:100%;max-height:78%;object-fit:contain}
+.lb .cap{color:#fff;margin-top:12px;font-weight:700;text-align:center;padding:0 16px}
+.lb button{position:absolute;background:rgba(255,255,255,.18);border:0;color:#fff;border-radius:50%;width:48px;height:48px;font-size:24px}
+.lb .x{top:calc(12px + env(safe-area-inset-top,0px));right:12px}
+.lb .pv{left:8px;top:50%} .lb .nx{right:8px;top:50%}
+.alb{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px}
+.alb button{border:0;padding:0;background:none}
+.alb img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:12px;background:var(--tint);display:block}
+.search{margin-top:12px}
+.star{background:none;border:0;padding:0;font-size:22px;line-height:1;color:var(--accent)}
+.sealed{background:var(--lav);border-radius:16px;padding:12px 14px;font-weight:700}
+.lovebox{border-radius:22px;padding:14px 16px;margin-top:16px;background:linear-gradient(135deg,var(--rose),var(--peach))}
+.lovebox .t{font-family:var(--serif);font-style:italic;white-space:pre-wrap}
+.letter{font-family:var(--serif);font-style:italic;font-size:19px;white-space:pre-wrap;line-height:1.6}
+#fx{position:fixed;inset:0;pointer-events:none;z-index:50;overflow:hidden}
+.hrt{position:absolute;bottom:-40px;animation:flo 2.8s ease-in forwards}
+@keyframes flo{0%{transform:translateY(0) scale(.6);opacity:0}10%{opacity:1}100%{transform:translateY(-110vh) scale(1.2) rotate(18deg);opacity:0}}
+html.big body{font-size:19px} html.big .note,html.big .hint{font-size:15px} html.big .chip{font-size:14px} html.big .tabs button{font-size:13px} html.big .row .m{font-size:16px}
+@media (prefers-reduced-motion:reduce){.sheet{animation:none}.hrt{display:none}}
+</style>
+</head>
+<body>
+<div id="top"></div>
+<div id="app"></div>
+<div id="tabs"></div>
+<div id="sheet"></div>
+<div id="toast"></div>
+<div id="lb"></div>
+<div id="fx"></div>
+<input type="file" id="qp-file" accept="image/*" multiple hidden>
+
+<script>
+(function(){
+'use strict';
+
+/* ---------- helpers ---------- */
+var DAY=86400000;
+var MONTHS=['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
+var MONTHS_NOM=['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function pad(n){return String(n).padStart(2,'0');}
+function iso(d){return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());}
+function parse(s){var p=String(s).split('-').map(Number);return new Date(p[0],p[1]-1,p[2]);}
+function today0(){var d=new Date();return new Date(d.getFullYear(),d.getMonth(),d.getDate());}
+function fmtDate(s){var d=parse(s);return d.getDate()+' '+MONTHS[d.getMonth()]+' '+d.getFullYear();}
+function fmtShort(s){var d=parse(s);return d.getDate()+' '+MONTHS[d.getMonth()];}
+function plural(n,a,b,c){n=Math.abs(n)%100;var n1=n%10;if(n>10&&n<20)return c;if(n1>1&&n1<5)return b;if(n1===1)return a;return c;}
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,7);}
+function dayNum(){return Math.floor(today0().getTime()/DAY);}
+function mmss(ms){var s=Math.round(ms/1000);return pad(Math.floor(s/60))+':'+pad(s%60);}
+var $=function(s){return document.querySelector(s);};
+
+/* ---------- content ---------- */
+var SRC={ru:'Нац. календарь РУз',intl:'Международные рекомендации'};
+var HEALTH=[
+ {id:'m_reg',who:'mom',kind:'exam',title:'Встать на учёт к акушеру-гинекологу',from:6,to:12,src:'intl',desc:'Обычно рекомендуют до 12 недель. Спроси в своей клинике, какие анализы и визиты назначены.'},
+ {id:'m_scr1',who:'mom',kind:'exam',title:'Первый скрининг (УЗИ + анализ крови)',from:11,to:14,src:'intl',desc:'Окно общепринятое; точные сроки и перечень назначает врач.'},
+ {id:'m_flu',who:'mom',kind:'vaccine',title:'Прививка от гриппа (инактивированная)',from:1,to:40,src:'intl',desc:'Рекомендуется беременным в сезон гриппа, в любом триместре. Живые вакцины от гриппа (назальные) беременным не ставят.'},
+ {id:'m_us2',who:'mom',kind:'exam',title:'УЗИ: анатомия плода',from:18,to:21,src:'intl',desc:'Второй скрининг. Здесь же можно узнать пол, если захочешь.'},
+ {id:'m_ogtt',who:'mom',kind:'exam',title:'Тест на гестационный диабет',from:24,to:28,src:'intl',desc:'Глюкозотолерантный тест. Как готовиться, расскажет лаборатория или врач.'},
+ {id:'m_tdap',who:'mom',kind:'vaccine',title:'АКДС (Tdap): защита малыша от коклюша',from:27,to:36,src:'chk',desc:'Международные рекомендации: одна доза в каждую беременность на 27–36 неделе. Входит ли она в схему для беременных в РУз и где её делают в Ташкенте, подтвердить не удалось. Спроси врача.'},
+ {id:'m_rsv',who:'mom',kind:'vaccine',title:'РСВ-вакцина (по сезону): обсудить с врачом',from:32,to:36,src:'chk',desc:'За рубежом рекомендуют на 32–36 неделе в сезон РСВ. Доступность в Узбекистане не проверена.'},
+ {id:'m_gbs',who:'mom',kind:'exam',title:'Мазок на стрептококк группы B',from:35,to:37,src:'intl',desc:'Результат важен для тактики в родах.'},
+ {id:'m_bag',who:'mom',kind:'prep',title:'Собрать сумку и документы в роддом',from:34,to:37,src:'chk',desc:'Готовый чек-лист есть в разделе «Ещё». Список документов и вещей уточни в своём роддоме.'},
+ {id:'b_hbv',who:'baby',kind:'vaccine',title:'Гепатит B: 1-я доза',from:0,to:0.5,src:'ru',desc:'В первые 24 часа жизни (Национальный календарь РУз).',when:'при рождении'},
+ {id:'b_bcg',who:'baby',kind:'vaccine',title:'БЦЖ (туберкулёз)',from:0,to:0.5,src:'chk',desc:'По данным презентации Программы иммунизации 2019 г. ставят на 2–5 день жизни, в роддоме. В свежем календаре (листовка санэпидслужбы) строка не попала в найденный фрагмент. Проверь.',when:'2–5 день'},
+ {id:'b_2m',who:'baby',kind:'vaccine',title:'Пента-1 (АКДС + гепатит B + Hib), ОПВ-1, Рота-1, Пневмо-1',from:2,to:3,src:'ru',desc:'Календарь РУз: в 2 месяца.',when:'2 мес.'},
+ {id:'b_3m',who:'baby',kind:'vaccine',title:'Пента-2, ОПВ-2, Рота-2, Пневмо-2',from:3,to:4,src:'ru',desc:'Календарь РУз: в 3 месяца.',when:'3 мес.'},
+ {id:'b_4m',who:'baby',kind:'vaccine',title:'Пента-3, ОПВ-3, Рота-3, ИПВ',from:4,to:5,src:'ru',desc:'Календарь РУз: в 4 месяца.',when:'4 мес.'},
+ {id:'b_6m',who:'baby',kind:'vaccine',title:'Корь: дополнительная доза (по эпид. ситуации)',from:6,to:7,src:'chk',desc:'В публикации yuz.uz сказано, что сейчас прививку от кори делают и в 6 месяцев. Это не постоянная строка календаря. Уточни в поликлинике.',when:'6 мес.'},
+ {id:'b_12m',who:'baby',kind:'vaccine',title:'КПК-1 (корь, паротит, краснуха), Пневмо-3',from:12,to:13,src:'ru',desc:'Календарь РУз: в 12 месяцев.',when:'12 мес.'},
+ {id:'b_16m',who:'baby',kind:'vaccine',title:'АКДС-4, ОПВ-4',from:16,to:17,src:'ru',desc:'Календарь РУз: в 16 месяцев. Дальше: КПК-2 в 6 лет, ОПВ-5 и АДС-М в 7 лет, ВПЧ в 9–13 лет.',when:'16 мес.'}
+];
+var TIPS=[
+ {k:'preg',from:1,to:13,t:'Тошнота: небольшие порции каждые 2–3 часа и сухое печенье у кровати помогают многим. Фолиевую кислоту и витамины назначает врач, дозу сама не подбирай.'},
+ {k:'preg',from:1,to:40,t:'Фотографируй анализы и результаты УЗИ и прикрепляй к записям дневника: всё будет в одном месте.'},
+ {k:'preg',from:14,to:27,t:'Первые шевеления многие чувствуют примерно с 18–20 недели (у первородящих чаще позже). Отметь дату в дневнике.'},
+ {k:'preg',from:14,to:40,t:'Спать удобнее на боку, подушка между коленями снимает нагрузку со спины.'},
+ {k:'preg',from:28,to:40,t:'Записывай вопросы к врачу в раздел «Ещё → Вопросы врачу» и бери телефон на приём.'},
+ {k:'preg',from:34,to:40,t:'Положи документы и обменную карту в одно место заранее.'},
+ {k:'baby',from:0,to:6,t:'Фото раз в месяц в одной позе и в одном месте: потом легко сравнить, как малыш растёт.'},
+ {k:'baby',from:0,to:12,t:'Записывай «первые разы» (улыбка, переворот, зубик): через год ты их не вспомнишь.'}
+];
+var FEED=[
+ {from:0,to:6,b:'rose',title:'До 6 месяцев',ok:['Грудное молоко или адаптированная смесь: вся нужная пища.'],care:['Прикорм раньше 6 месяцев без назначения педиатра не начинают.','Воду и соки обычно не дают.'],hack:['Если кажется, что молока мало, сначала обсуди это с врачом или консультантом по ГВ.']},
+ {from:6,to:8,b:'mint',title:'6–8 месяцев: первый прикорм',ok:['Овощные пюре: кабачок, цветная капуста, брокколи, тыква.','Каши: гречка, рис, кукуруза (на воде или на молоке малыша).','Мясное пюре: индейка, кролик, говядина, это источник железа.','Грудное молоко или смесь остаются основой питания.'],care:['Начинай с 1 продукта, с 1–2 чайных ложек, новые добавляй по одному.','Мёд, цельные орехи, соль и сахар не давать.','Коровье молоко как напиток: не раньше 12 месяцев.'],hack:['Веди «журнал прикорма» ниже: продукт, дата, реакция. Так проще заметить аллергию.','Первый прикорм давай утром, реакцию видно в течение дня.']},
+ {from:9,to:11,b:'sky',title:'9–11 месяцев',ok:['Более густая консистенция, мягкие кусочки.','Желток, рыба, кисломолочные продукты, фрукты.','Пальчиковая еда: размятые овощи, мягкие фрукты.'],care:['Виноград, орехи, попкорн, твёрдые куски: риск удушья.','Мёд до 12 месяцев нельзя.'],hack:['Давай ложку малышу в руки: пусть пачкается, это нормально.']},
+ {from:12,to:24,b:'butter',title:'12–24 месяца',ok:['Еда с общего стола без соли, сахара и острого.','Цельное коровье молоко как напиток допустимо после года.','Грудное вскармливание можно продолжать, если вам обоим этого хочется.'],care:['Сладкие напитки, чипсы, колбасы лучше отложить.','Мелкие твёрдые продукты по-прежнему риск.'],hack:['Ешь вместе с малышом: он копирует тебя.']}
+];
+var TAGS=['самочувствие','шевеления','УЗИ','анализы','вопрос врачу','мысли','первые разы','рост и вес'];
+var MOODS=[['😍','счастлива'],['🙂','спокойно'],['😐','так себе'],['😣','тяжело'],['😢','грустно']];
+var FRUIT={5:['🌱','семечко'],6:['🟢','горошину'],7:['🍇','чернику'],8:['🍓','малину'],9:['🍒','вишню'],10:['🍓','клубнику'],11:['🥝','киви'],12:['🍋','лайм'],13:['🍋','лимон'],14:['🍑','персик'],15:['🍎','яблоко'],16:['🥑','авокадо'],17:['🍐','грушу'],18:['🫑','сладкий перец'],19:['🥭','манго'],20:['🍌','банан'],21:['🥕','морковь'],22:['🥭','папайю'],23:['🍊','грейпфрут'],24:['🌽','початок кукурузы'],25:['🥔','репу'],26:['🧅','зелёный лук'],27:['🥦','цветную капусту'],28:['🍆','баклажан'],29:['🎃','тыкву баттернат'],30:['🥬','кочан капусты'],31:['🥥','кокос'],32:['🥒','крупный кабачок'],33:['🍍','ананас'],34:['🍈','дыню'],35:['🍈','медовую дыню'],36:['🥬','кочан салата ромэн'],37:['🥬','пучок мангольда'],38:['🌿','стебель порея'],39:['🍉','мини-арбуз'],40:['🍉','арбуз']};
+var MSG_PREG=['Ты делаешь огромную работу, даже когда просто отдыхаешь.','Сегодня достаточно быть, а не успевать.','Поговори с малышом, это приятно вам обоим.','Вода, прогулка, отдых: этого сегодня достаточно.','Твоё самочувствие важно не меньше, чем анализы и графики.','Любой вопрос врачу уместен. Запиши его, чтобы не забыть.','Усталость в этот период нормальна. Разреши себе паузу.','Что сегодня сделает тебя чуточку спокойнее?','Попроси папу об одной маленькой помощи прямо сейчас.'];
+var MSG_BABY=['Ты справляешься лучше, чем тебе кажется.','Не выспалась? Это не твоя вина. Проси о помощи.','Этот день скоро станет воспоминанием. Запиши одну деталь.','Не сравнивай малыша с чужими графиками.','Отдых для тебя не роскошь, а часть заботы о малыше.','Сегодня достаточно того, что вы оба накормлены и обняты.'];
+var PROMPT_PREG=['Что сегодня тебя порадовало?','Опиши свои ощущения в теле сегодня.','О чём ты мечтаешь для малыша?','Что хочешь рассказать малышу, когда он родится?','Какое у тебя сегодня настроение и почему?','Что тебя тревожит? Запиши, а потом решите с папой, что с этим делать.','За что ты благодарна сегодня?','Как папа заботится о вас? Что запомнилось?','Какой был самый смешной момент недели?','Какое имя тебе сегодня нравится и почему?'];
+var PROMPT_BABY=['Что нового малыш сделал сегодня?','Опиши этот день одной деталью, которую хочешь запомнить.','Что тебя удивило в малыше на этой неделе?','Чему ты научилась за эту неделю?','Что тебе сейчас нужно от близких?','Какой звук или улыбка сегодня тебя растопили?'];
+var BAG=[
+ {g:'Документы',i:[['pasp','Паспорт'],['card','Обменная карта'],['pol','Полис или страховка (если есть)'],['dog','Договор и контакты врача (если роды по контракту)']]},
+ {g:'Маме',i:[['robe','Халат и сменная одежда'],['slip','Тапочки'],['hyg','Гигиена: щётка, паста, расчёска, крем'],['pads','Послеродовые прокладки и бельё'],['chg','Телефон и зарядка'],['wat','Вода и перекус']]},
+ {g:'Малышу',i:[['dia','Подгузники'],['wip','Салфетки и крем под подгузник'],['out','Одежда на выписку'],['cap','Шапочка и носочки'],['blk','Пелёнка или одеяло']]}
+];
+var MILES=[
+ {id:'smile',t:'Первая осознанная улыбка',from:1,to:3},
+ {id:'head',t:'Держит голову лёжа на животе',from:2,to:4},
+ {id:'laugh',t:'Смеётся вслух',from:3,to:5},
+ {id:'roll',t:'Переворачивается',from:4,to:7},
+ {id:'sit',t:'Сидит самостоятельно',from:6,to:9},
+ {id:'crawl',t:'Ползает',from:7,to:11},
+ {id:'tooth',t:'Первый зубик',from:5,to:12},
+ {id:'step',t:'Первые шаги',from:9,to:16},
+ {id:'word',t:'Первое слово',from:10,to:15}
+];
+
+/* ---------- storage: cloud (shared db) or local (IndexedDB) ---------- */
+var COLLS=['meta','entries','checks','foods','kicks','weights','questions','visits','names','bagc'];
+var Store={
+  mode:'local',base:null,idb:null,mem:new Map(),watchers:[],
+  initLocal:function(){
+    var self=this;
+    return new Promise(function(res){
+      try{
+        var r=indexedDB.open('mama-diary-v2',1);
+        r.onupgradeneeded=function(){r.result.createObjectStore('kv',{keyPath:'k'});};
+        r.onsuccess=function(){self.idb=r.result;res();};
+        r.onerror=function(){self.idb=null;res();};
+        r.onblocked=function(){self.idb=null;res();};
+      }catch(e){self.idb=null;res();}
+    });
+  },
+  _tx:function(mode){return this.idb.transaction('kv',mode).objectStore('kv');},
+  _lget:function(c,id){
+    var self=this;
+    if(!this.idb){var v=this.mem.get(c+'/'+id);return Promise.resolve(v?Object.assign({id:id},v):null);}
+    return new Promise(function(res,rej){var q=self._tx('readonly').get(c+'/'+id);q.onsuccess=function(){var v=q.result;res(v?Object.assign({id:id},v.data):null);};q.onerror=function(){rej(q.error);};});
+  },
+  _lset:function(c,id,data){
+    var self=this;
+    if(!this.idb){this.mem.set(c+'/'+id,data);return Promise.resolve();}
+    return new Promise(function(res,rej){var q=self._tx('readwrite').put({k:c+'/'+id,c:c,data:data});q.onsuccess=function(){res();};q.onerror=function(){rej(q.error);};});
+  },
+  _ldel:function(c,id){
+    var self=this;
+    if(!this.idb){this.mem.delete(c+'/'+id);return Promise.resolve();}
+    return new Promise(function(res,rej){var q=self._tx('readwrite').delete(c+'/'+id);q.onsuccess=function(){res();};q.onerror=function(){rej(q.error);};});
+  },
+  _llist:function(c){
+    var self=this;
+    if(!this.idb){var out=[];this.mem.forEach(function(v,k){if(k.indexOf(c+'/')===0)out.push(Object.assign({id:k.slice(c.length+1)},v));});return Promise.resolve(out);}
+    return new Promise(function(res,rej){
+      var q=self._tx('readonly').getAll(IDBKeyRange.bound(c+'/',c+'/\uffff'));
+      q.onsuccess=function(){res(q.result.map(function(v){return Object.assign({id:v.k.slice(c.length+1)},v.data);}));};
+      q.onerror=function(){rej(q.error);};
+    });
+  },
+  _emit:function(c){
+    var self=this;
+    this.watchers.forEach(function(w){if(w.c===c&&self.mode==='local'){self._llist(c).then(w.cb);}});
+  },
+  _fatal:function(e){return e&&['invalid_argument','not_granted','revoked','capability_disabled','capability_removed'].indexOf(e.code)>=0;},
+  _canWriteCloud:function(){
+    return this.base.collection('meta').doc('probe').set({t:Date.now()}).then(function(){return true;},function(){return false;});
+  },
+  degrade:function(){
+    var self=this;
+    if(this.mode==='local')return Promise.resolve();
+    this.mode='local';
+    this.watchers.forEach(function(w){try{w.un&&w.un();}catch(e){} w.un=null;});
+    this.watchers.forEach(function(w){self._llist(w.c).then(w.cb);});
+    App.onDegrade();
+    return Promise.resolve();
+  },
+  get:function(c,id){
+    if(this.mode==='cloud'){
+      return this.base.collection(c).doc(id).get().then(function(s){return s.exists?Object.assign({id:id},s.data()):null;});
+    }
+    return this._lget(c,id);
+  },
+  set:function(c,id,data){
+    var self=this;
+    if(this.mode==='cloud'){
+      return this.base.collection(c).doc(id).set(data).catch(function(e){
+        if(self._fatal(e)){
+          return self._canWriteCloud().then(function(ok){
+            if(ok)throw e;
+            return self.degrade().then(function(){return self.set(c,id,data);});
+          });
+        }
+        throw e;
+      });
+    }
+    return this._lset(c,id,data).then(function(){self._emit(c);});
+  },
+  del:function(c,id){
+    var self=this;
+    if(this.mode==='cloud'){return this.base.collection(c).doc(id).delete();}
+    return this._ldel(c,id).then(function(){self._emit(c);});
+  },
+  list:function(c){
+    if(this.mode==='cloud'){return this.base.collection(c).get().then(function(s){return s.docs.map(function(d){return Object.assign({id:d.id},d.data());});});}
+    return this._llist(c);
+  },
+  watch:function(c,cb){
+    var self=this,w={c:c,cb:cb,un:null};
+    this.watchers.push(w);
+    if(this.mode==='cloud'){
+      w.un=this.base.collection(c).onSnapshot(function(s){cb(s.docs.map(function(d){return Object.assign({id:d.id},d.data());}));},function(e){if(self._fatal(e))self.degrade();});
+    }else{
+      this._llist(c).then(cb);
+    }
+  }
+};
+
+/* ---------- state ---------- */
+var S={
+  booting:true,profile:null,entries:[],checks:{},foods:[],kicks:[],weights:[],questions:[],visits:[],names:[],bagc:[],
+  tab:'today',viewIdx:null,sheet:null,healthWho:'mom',openItem:null,feedStage:null,tool:null,weightWho:null,
+  tagFilter:null,confirmDel:null,downloads:null,meId:'me',onb:{who:'preg'},dview:'feed',q:'',fav:false,fab:false,love:null,lb:null,albumList:[]
+};
+var C={running:false,cur:null,list:[],timer:null};
+var photoCache=new Map(),photoPending=new Map();
+var kickChain=Promise.resolve();
+var memLS={};
+function lsGet(k){try{var v=window.localStorage.getItem(k);return v==null?(memLS[k]||null):v;}catch(e){return memLS[k]||null;}}
+function lsSet(k,v){memLS[k]=v;try{window.localStorage.setItem(k,v);}catch(e){}}
+function lsDel(k){delete memLS[k];try{window.localStorage.removeItem(k);}catch(e){}}
+function hs(x){var h=0;for(var i=0;i<x.length;i++)h=(h*31+x.charCodeAt(i))|0;return String(h);}
+var LOVE_LINES=['Я тебя люблю. Просто так.','Ты лучшая мама на свете.','Мы с малышом без ума от тебя.','Ты справляешься блестяще.','Спасибо, что ты есть.','Я всегда рядом.','Ты делаешь меня счастливым.','Малыш будет гордиться такой мамой.','Ты красивее всех на свете.','Я люблю вас обоих.'];
+var LOAD_LINES=['Загружаем… и думаем о тебе ❤','Секунду, готовим ваш дневник…','Совсем чуть-чуть…'];
+var loadLine=LOAD_LINES[Math.floor(Math.random()*LOAD_LINES.length)];
+var brandTaps=0,brandT=null,footTaps=0,footT=null;
+function L(){return S.love||{};}
+function signTxt(){var x=(L().sign||'').trim();return x?'\n\n'+x:'';}
+function hearts(n){
+  if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  var fx=document.getElementById('fx');if(!fx)return;
+  var em=['❤️','💗','💖','💕','🤍'];
+  for(var i=0;i<n;i++){(function(i){
+    var sp=document.createElement('span');sp.className='hrt';sp.textContent=em[i%em.length];
+    sp.style.left=(Math.random()*92)+'%';sp.style.fontSize=(18+Math.random()*26)+'px';
+    sp.style.animationDelay=(Math.random()*0.9)+'s';sp.style.animationDuration=(2+Math.random()*1.6)+'s';
+    fx.appendChild(sp);setTimeout(function(){if(sp.parentNode)sp.parentNode.removeChild(sp);},4600);
+  })(i);}
+}
+function loveToast(){hearts(14);toast(LOVE_LINES[Math.floor(Math.random()*LOVE_LINES.length)]);}
+function unlockedNotes(){var t=iso(today0());return (L().notes||[]).filter(function(n){return n.date&&n.date<=t&&n.text;}).sort(function(a,b){return a.date<b.date?1:-1;});}
+function specialToday(){
+  var l=L(),md=iso(today0()).slice(5),out=[];
+  if(l.anniv&&l.anniv.slice(5)===md)out.push('С нашей годовщиной, любимая! 💍');
+  if(l.herBday&&l.herBday.slice(5)===md)out.push('С днём рождения, любимая! 🎂');
+  return out;
+}
+function togetherDays(){var l=L();if(!l.together)return null;return Math.max(0,Math.round((today0()-parse(l.together))/DAY));}
+function postRender(){
+  if(S.booting||!S.profile||S.sheet)return;
+  if(S.tab==='today'&&specialToday().length&&S._spDay!==iso(today0())){S._spDay=iso(today0());hearts(26);}
+  var w=(L().welcome||'').trim();
+  if(w&&lsGet('md-wel')!==hs(w)){lsSet('md-wel',hs(w));S.sheet={type:'letter',title:'Для тебя 💌',text:w};renderSheet();hearts(18);}
+}
+function bagDone(){var b=bagStats();if(b.tot&&b.done===b.tot){hearts(20);toast('Сумка собрана! Я горжусь тобой ❤️');}}
+
+/* ---------- timeline math ---------- */
+function phaseInfo(dateStr){
+  var p=S.profile;if(!p)return null;
+  var d=parse(dateStr);
+  if(p.birthDate&&d>=parse(p.birthDate)){
+    var b=parse(p.birthDate);
+    var m=(d.getFullYear()-b.getFullYear())*12+d.getMonth()-b.getMonth();
+    var anchor=new Date(b.getFullYear(),b.getMonth()+m,b.getDate());
+    if(anchor>d){m--;anchor=new Date(b.getFullYear(),b.getMonth()+m,b.getDate());}
+    var days=Math.round((d-anchor)/DAY);
+    var total=Math.round((d-b)/DAY);
+    return {kind:'baby',months:m,days:days,total:total,pos:m+days/30.4,tick:m};
+  }
+  if(p.dueDate){
+    var t=Math.round((d-parse(p.dueDate))/DAY)+280;
+    if(t<0)return null;
+    return {kind:'preg',weeks:Math.floor(t/7),days:t%7,total:t,pos:t/7,tick:Math.floor(t/7)};
+  }
+  return null;
+}
+function phaseLabel(i){
+  if(!i)return '';
+  if(i.kind==='preg')return i.weeks+' '+plural(i.weeks,'неделя','недели','недель')+(i.days?' '+i.days+' '+plural(i.days,'день','дня','дней'):'');
+  if(i.total<14)return i.total+' '+plural(i.total,'день','дня','дней');
+  if(i.months<3)return Math.floor(i.total/7)+' '+plural(Math.floor(i.total/7),'неделя','недели','недель');
+  return i.months+' мес.'+(i.days?' '+i.days+' дн.':'');
+}
+function nowInfo(){return phaseInfo(iso(today0()));}
+function viewPos(info){return S.viewIdx!=null?S.viewIdx:(info?info.tick:0);}
+function itemState(it,info,pos){
+  var cur;
+  if(it.who==='mom'){
+    if(!info)return 'later';
+    cur=(info.kind==='preg')?pos:999;
+  }else{
+    if(!info||info.kind==='preg')return 'later';
+    cur=pos;
+  }
+  if(cur>=it.from&&cur<it.to+(it.who==='mom'?1:0))return 'now';
+  if(cur>it.to)return 'past';
+  var soon=it.who==='mom'?6:1.5;
+  if(it.from-cur<=soon&&it.from>cur)return 'soon';
+  return 'later';
+}
+function itemWhen(it){
+  if(it.when)return it.when;
+  if(it.from===1&&it.to===40)return 'в течение беременности';
+  return it.from+'–'+it.to+' нед.';
+}
+function trimester(w){return w<=13?1:w<=27?2:3;}
+function greet(){
+  var h=new Date().getHours();
+  var g=h<5?'Доброй ночи':h<12?'Доброе утро':h<18?'Добрый день':'Добрый вечер';
+  var n=S.profile&&S.profile.momName;
+  return g+(n?', '+n:'')+'!';
+}
+function isBabyPhase(){var i=nowInfo();return !!(i&&i.kind==='baby');}
+function prompts(){return isBabyPhase()?PROMPT_BABY:PROMPT_PREG;}
+
+/* ---------- app ---------- */
+var App={
+  onDegrade:function(){
+    toast('Облако недоступно для этого доступа. Записи сохраняются на этом устройстве.');
+    renderAll();
+  }
+};
+function toast(msg){
+  var el=$('#toast');
+  el.innerHTML='<div class="toast" role="status">'+esc(msg)+'</div>';
+  clearTimeout(toast._t);toast._t=setTimeout(function(){el.innerHTML='';},3600);
+}
+
+var ICON={
+  today:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>',
+  diary:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h11a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H6z"/><path d="M6 3v18M10 8h5M10 12h5"/></svg>',
+  health:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.4-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 11c0 5.6-7 10-7 10z"/></svg>',
+  feed:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3v8a3 3 0 0 0 3 3v7M10 3v6M13 3v8M17 3c-2 2-2 6 0 8v10"/></svg>',
+  more:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="6" height="6" rx="1.5"/><rect x="14" y="4" width="6" height="6" rx="1.5"/><rect x="4" y="14" width="6" height="6" rx="1.5"/><rect x="14" y="14" width="6" height="6" rx="1.5"/></svg>',
+  gear:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>'
+};
+
+/* ---------- rendering ---------- */
+function renderAll(){renderTop();renderMain();renderTabs();}
+function refresh(){
+  if(S.booting)return;
+  renderTop();
+  var ae=document.activeElement;
+  if(ae&&$('#app')&&$('#app').contains(ae)&&/INPUT|TEXTAREA|SELECT/.test(ae.tagName))return;
+  renderMain();
+}
+function renderTop(){
+  var p=S.profile;
+  var title=!p?'Дневник мамы':(isBabyPhase()?(p.babyName||'Малыш'):'Дневник беременности');
+  $('#top').innerHTML='<header class="top"><div class="top-in"><div class="brand" data-act="brand">'+esc(title)+'</div><div class="top-r">'+
+    (S.booting?'':backupPill())+
+    (p?'<button class="icon-btn" data-act="big" aria-label="Крупный шрифт" style="font-weight:800;font-size:15px">Аа</button><button class="icon-btn" data-act="settings" aria-label="Настройки">'+ICON.gear+'</button>':'')+
+    '</div></div></header>';
+}
+function renderTabs(){
+  if(!S.profile){$('#tabs').innerHTML='';return;}
+  var preg=!isBabyPhase();
+  var t=[['today','Сегодня'],['diary','Дневник'],['health','Здоровье'],['feed','Питание'],['more','Ещё']];
+  var fab='<div class="fab-wrap">'+(S.fab?'<button class="fab-item" data-act="quick-photo"><span>📷</span>Фото</button><button class="fab-item" data-act="new-entry"><span>✍️</span>Запись</button>'+(preg?'<button class="fab-item" data-act="quick-kick"><span>👣</span>Шевеление</button>':''):'')+
+    '<button class="fab" data-act="fab" aria-label="'+(S.fab?'Закрыть меню':'Быстро добавить')+'" aria-expanded="'+S.fab+'">'+(S.fab?'×':'+')+'</button></div>';
+  $('#tabs').innerHTML=fab+'<nav class="tabs" aria-label="Разделы"><div class="tabs-in">'+t.map(function(x){
+    return '<button data-act="tab" data-v="'+x[0]+'"'+(S.tab===x[0]?' aria-current="page"':'')+'>'+ICON[x[0]]+'<span>'+x[1]+'</span></button>';
+  }).join('')+'</div></nav>';
+}
+function isStandalone(){return !!((window.matchMedia&&window.matchMedia('(display-mode: standalone)').matches)||window.navigator.standalone);}
+function lastBackup(){return parseInt(lsGet('md-lastbk')||'0',10)||0;}
+function backupPill(){
+  if(!S.entries.length)return '';
+  var lb=lastBackup(),dd=lb?Math.floor((Date.now()-lb)/DAY):null;
+  return '<button class="pill" data-act="settings" style="border:0">💾 '+(lb?'копия: '+(dd===0?'сегодня':dd+' дн. назад'):'копии нет')+'</button>';
+}
+function bannerHtml(){
+  if(S.booting)return '';
+  var h='';
+  if(!isStandalone()&&lsGet('md-ih')!=='1')h+='<div class="banner">Чтобы дневник открывался как приложение и не терялся, добавь его на главный экран. iPhone: «Поделиться» → «На экран Домой». Android: меню браузера → «Установить приложение». <button data-act="hide-install">Понятно</button></div>';
+  if(S.entries.length>=3){
+    var lb=lastBackup(),dd=lb?Math.floor((Date.now()-lb)/DAY):999;
+    if(dd>=14)h+='<div class="banner">'+(lb?'Копию дневника не делали '+dd+' '+plural(dd,'день','дня','дней')+'.':'Копии дневника ещё нет.')+' Все записи хранятся только на этом телефоне. <button data-act="backup-now">Сохранить копию</button></div>';
+  }
+  return h;
+}
+function renderMain(){
+  var el=$('#app');
+  if(S.booting){el.innerHTML='<div class="wrap"><p class="empty">'+esc(loadLine)+'</p></div>';return;}
+  if(!S.profile){el.innerHTML=renderOnb();return;}
+  var oldR=el.querySelector('.wks'),sl=oldR?oldR.scrollLeft:null;
+  var body='';
+  if(S.tab==='today')body=viewToday();
+  else if(S.tab==='diary')body=viewDiary();
+  else if(S.tab==='health')body=viewHealth();
+  else if(S.tab==='feed')body=viewFeed();
+  else body=viewMore();
+  el.innerHTML='<div class="wrap">'+bannerHtml()+body+'</div>';
+  hydratePhotos();
+  var nr=el.querySelector('.wks');
+  if(nr){
+    if(sl!=null)nr.scrollLeft=sl;
+    else{var c=nr.querySelector('.wk.cur');if(c)nr.scrollLeft=c.offsetLeft-nr.clientWidth/2+c.offsetWidth/2;}
+  }
+  postRender();
+}
+
+/* onboarding */
+function renderOnb(){
+  var w=S.onb.who;
+  var h='<div class="wrap onb"><div class="emoji">🤍</div><h1>Дневник, который будет с тобой с первой недели</h1><p class="note" style="font-size:15px">Записи и фото, что и когда делать по неделям, прививки и прикорм, шевеления, вес, сумка в роддом и много другого.</p>';
+  h+='<div class="seg" role="group"><button data-act="onb-who" data-v="preg" aria-pressed="'+(w==='preg')+'">Я жду малыша</button><button data-act="onb-who" data-v="baby" aria-pressed="'+(w==='baby')+'">Малыш уже родился</button></div>';
+  h+='<div class="field"><label class="fl">Как тебя называть?<input type="text" id="ob-mom" maxlength="30" placeholder="Имя (по желанию)"></label></div>';
+  if(w==='preg'){
+    h+='<div class="field"><label class="fl">Что ты знаешь?<select id="ob-kind"><option value="due">Предполагаемую дату родов (ПДР)</option><option value="lmp">Первый день последних месячных</option></select></label></div>';
+    h+='<div class="field"><label class="fl">Дата<input type="date" id="ob-date"></label><p class="hint">Если ПДР уточнили на УЗИ, лучше указать её.</p></div>';
+  }else{
+    h+='<div class="field"><label class="fl">Дата рождения малыша<input type="date" id="ob-date" max="'+iso(today0())+'"></label></div>';
+    h+='<div class="field"><label class="fl">Имя малыша (по желанию)<input type="text" id="ob-name" maxlength="40"></label></div>';
+  }
+  h+='<button class="btn pri big" data-act="onb-save">Начать</button>';
+  h+='<p class="note" style="margin-top:18px">Справочные сведения в приложении не заменяют врача. Сроки и назначения всегда уточняй в своей клинике.</p></div>';
+  return h;
+}
+
+/* week bubbles */
+function wksHtml(info){
+  var kind=info?info.kind:'preg';
+  var from=kind==='preg'?1:0,to=kind==='preg'?40:24;
+  var marks={};
+  S.entries.forEach(function(e){var i=phaseInfo(e.date);if(i&&i.kind===kind)marks[i.tick]=1;});
+  var cur=info&&info.kind===kind?info.tick:-1,sel=S.viewIdx;
+  var h='<div class="wks" role="list" aria-label="'+(kind==='preg'?'Недели беременности':'Месяцы малыша')+'">';
+  for(var k=from;k<=to;k++){
+    var t=kind==='preg'?trimester(k):(k<6?1:k<12?2:3);
+    h+='<button class="wk t'+t+(k===cur?' cur':'')+(sel===k?' sel':'')+'" role="listitem" data-act="tick" data-v="'+k+'" aria-label="'+(kind==='preg'?'Неделя ':'Месяц ')+k+'">'+k+(marks[k]?'<span class="d"></span>':'')+'</button>';
+  }
+  return h+'</div><p class="hintline">'+(kind==='preg'?'Нажми на неделю, чтобы заглянуть вперёд. Точка значит, что есть записи.':'Нажми на месяц, чтобы посмотреть, что ждёт дальше. Точка значит, что есть записи.')+'</p>';
+}
+function chipsFor(it,info,pos){
+  var st=itemState(it,info,pos),c=S.checks[it.id],h='';
+  if(c&&c.done)h+='<span class="chip ok">сделано'+(c.date?' · '+esc(fmtDate(c.date)):'')+'</span>';
+  else if(st==='now')h+='<span class="chip now">сейчас</span>';
+  else if(st==='soon')h+='<span class="chip">скоро</span>';
+  else if(st==='past')h+='<span class="chip warn">срок прошёл, проверь</span>';
+  if(it.src==='chk')h+='<span class="chip warn">уточнить</span>';
+  else h+='<span class="chip src">'+esc(SRC[it.src])+'</span>';
+  return h;
+}
+
+/* today */
+function nextVisit(){
+  var t=iso(today0()),best=null;
+  S.visits.forEach(function(v){if(v.date>=t&&(!best||v.date<best.date||(v.date===best.date&&(v.time||'')<(best.time||''))))best=v;});
+  return best;
+}
+function viewToday(){
+  var info=nowInfo(),pos=viewPos(info),h='';
+  h+='<p class="greet">'+esc(greet())+'</p>';
+  specialToday().forEach(function(x){h+='<div class="lovebox"><div class="t">'+esc(x)+'</div></div>';});
+  var un=unlockedNotes();
+  if(un.length&&Math.round((today0()-parse(un[0].date))/DAY)<=7){h+='<div class="lovebox"><div class="note" style="color:inherit;opacity:.8">💌 Для тебя</div><div class="t">'+esc(un[0].text)+'</div></div>';}
+  var kind=info?info.kind:'preg';
+  if(info&&info.kind==='preg'){
+    var left=280-info.total,w=Math.max(5,Math.min(40,info.weeks));
+    var fr=FRUIT[w]||['🌱','семечко'];
+    var tri=trimester(info.weeks);
+    h+='<div class="hero"><div class="hero-top"><div><div class="small">Твой срок</div><div class="num">'+info.weeks+'</div><div class="u">'+plural(info.weeks,'неделя','недели','недель')+(info.days?' и '+info.days+' '+plural(info.days,'день','дня','дней'):'')+'</div></div><div class="fruit" data-act="fruit" role="img" aria-label="Размер малыша">'+fr[0]+'</div></div>'+
+      '<p class="hero-line">Малыш сейчас размером примерно с '+(info.weeks<5?'семечко':esc(fr[1]))+'</p>'+
+      '<div class="prog" role="progressbar" aria-valuenow="'+Math.min(100,Math.round(info.total/2.8))+'" aria-valuemin="0" aria-valuemax="100"><i style="width:'+Math.min(100,info.total/2.8)+'%"></i></div>'+
+      '<div class="prog-l">'+['','Первый','Второй','Третий'][tri]+' триместр · '+(left>0?'до родов около '+left+' '+plural(left,'день','дня','дней'):'срок ПДР наступил')+'</div></div>';
+    h+='<p class="note" style="margin:6px 4px 0">Сравнение с фруктом примерное: малыши разные. ПДР: '+esc(fmtDate(S.profile.dueDate))+'.</p>';
+  }else if(info&&info.kind==='baby'){
+    var big=info.months>=3?info.months:Math.floor(info.total/7),unit=info.months>=3?plural(info.months,'месяц','месяца','месяцев'):plural(big,'неделя','недели','недель');
+    if(info.total<14){big=info.total;unit=plural(big,'день','дня','дней');}
+    h+='<div class="hero"><div class="hero-top"><div><div class="small">'+esc(S.profile.babyName||'Малыш')+' с нами</div><div class="num">'+big+'</div><div class="u">'+unit+(info.months>=3&&info.days?' и '+info.days+' '+plural(info.days,'день','дня','дней'):'')+'</div></div><div class="fruit" data-act="fruit" role="img" aria-label="Размер малыша">👶</div></div>'+
+      '<p class="hero-line">Родился '+esc(fmtDate(S.profile.birthDate))+'</p></div>';
+  }else{
+    h+='<div class="hero"><div class="num">—</div><p class="hero-line">Проверь дату в настройках.</p></div>';
+  }
+  var msgs=kind==='baby'?MSG_BABY:MSG_PREG;
+  h+='<p class="sup">'+esc(new Date().getHours()<5?'Не спится? Я тебя люблю. Ложись, малыш тоже отдыхает.':msgs[dayNum()%msgs.length])+'</p>';
+  h+=wksHtml(info);
+  if(S.viewIdx!=null){
+    h+='<p class="preview-note">Ты смотришь '+(info&&info.kind==='baby'?'возраст '+S.viewIdx+' мес.':S.viewIdx+'-ю неделю')+'. <button data-act="tick-reset">Вернуться к сегодняшнему дню</button></p>';
+  }
+  h+='<button class="btn pri big" data-act="new-entry">Записать в дневник</button>';
+  var pr=prompts()[dayNum()%prompts().length];
+  h+='<div class="q"><div class="note" style="color:inherit;opacity:.8">Вопрос дня</div><div class="qt">'+esc(pr)+'</div><button class="btn sm" data-act="answer-prompt">Ответить</button></div>';
+  var nv=nextVisit();
+  if(nv){
+    var dl=Math.round((parse(nv.date)-today0())/DAY);
+    h+='<button class="vis" data-act="open-tool" data-v="visits" style="border:0;width:100%;text-align:left"><span class="e">📅</span><span><b>'+esc(nv.title)+'</b><br><span class="note" style="color:inherit;opacity:.8">'+(dl===0?'сегодня':dl===1?'завтра':'через '+dl+' '+plural(dl,'день','дня','дней'))+' · '+esc(fmtShort(nv.date))+(nv.time?', '+esc(nv.time):'')+(nv.place?' · '+esc(nv.place):'')+'</span></span></button>';
+  }
+  var rows='';
+  HEALTH.forEach(function(it){
+    var st=itemState(it,info,pos);
+    var show=(kind==='preg'&&it.who==='mom'&&(st==='now'||st==='soon'))||(kind==='baby'&&it.who==='baby'&&(st==='now'||st==='soon'||(st==='past'&&!(S.checks[it.id]&&S.checks[it.id].done))));
+    if(!show)return;
+    rows+='<button class="row k-'+it.kind+'" data-act="goto-health" data-v="'+it.id+'"><div class="t">'+esc(it.title)+'</div><div class="m">'+esc(itemWhen(it))+'</div><div class="chips">'+chipsFor(it,info,pos)+'</div></button>';
+  });
+  TIPS.forEach(function(tp){
+    if(tp.k!==kind)return;
+    if(pos>=tp.from&&pos<=tp.to)rows+='<div class="row k-tip"><div class="m" style="color:var(--ink)">'+esc(tp.t)+'</div></div>';
+  });
+  if(kind==='baby'){
+    var fi=0;FEED.forEach(function(f,i){if(pos>=f.from)fi=i;});
+    rows+='<button class="row k-tip" data-act="goto-feed"><div class="t">Питание: '+esc(FEED[fi].title)+'</div><div class="m">Что можно, что осторожно и журнал прикорма</div></button>';
+  }
+  h+='<div class="card"><div class="sec-h"><h2>Сейчас важно</h2></div>'+(rows?'<div class="list">'+rows+'</div>':'<p class="empty">На этом сроке нет отмеченных дел. Загляни в «Здоровье», там весь список.</p>')+'</div>';
+  if(S.entries.length){
+    h+='<div class="card"><div class="sec-h"><h2>Последняя запись</h2><button class="btn sm" data-act="tab" data-v="diary">Весь дневник</button></div>'+entryHtml(S.entries[0],true)+'</div>';
+  }
+  return h;
+}
+
+/* diary */
+function capFor(e){var i=phaseInfo(e.date);return fmtDate(e.date)+(i?' · '+phaseLabel(i):'');}
+function isSealed(e){return !!(e.sealUntil&&e.sealUntil>iso(today0()));}
+function entryPhotoList(e){return (e.photos||[]).map(function(id){return {id:id,cap:capFor(e)};});}
+function entryHtml(e,compact){
+  var d=parse(e.date),i=phaseInfo(e.date),photos=(e.photos||[]);
+  var h='<div class="entry"><div class="dt"><b>'+d.getDate()+'</b><span>'+MONTHS[d.getMonth()].slice(0,3)+'</span></div><div>';
+  if(isSealed(e)){
+    h+='<div class="sealed">🔒 Письмо запечатано до '+esc(fmtDate(e.sealUntil))+'</div>';
+    if(!compact)h+='<div class="acts"><button class="dg" data-act="del-entry" data-v="'+esc(e.id)+'">'+(S.confirmDel===e.id?'Точно удалить?':'Удалить')+'</button></div>';
+    return h+'</div></div>';
+  }
+  var mood=(typeof e.mood==='number'&&MOODS[e.mood])?MOODS[e.mood][0]+' ':'';
+  if(i||mood||e.sealUntil)h+='<div class="wk2">'+mood+(e.sealUntil?'💌 письмо из прошлого · ':'')+(i?esc(phaseLabel(i))+(i.kind==='baby'?' · после рождения':''):'')+'</div>';
+  if(e.text)h+='<div class="tx">'+esc(e.text)+'</div>';
+  if(photos.length)h+='<div class="photos">'+photos.map(function(p,k){return '<img class="ph" alt="Фото к записи" data-photo="'+esc(p)+'" data-act="lb" data-v="'+esc(e.id)+'" data-i="'+k+'">';}).join('')+'</div>';
+  if((e.tags||[]).length)h+='<div class="chips">'+e.tags.map(function(t){return '<span class="chip">'+esc(t)+'</span>';}).join('')+'</div>';
+  if(!compact){
+    h+='<div class="acts"><button class="star" data-act="fav" data-v="'+esc(e.id)+'" aria-label="'+(e.fav?'Убрать из избранного':'В избранное')+'" aria-pressed="'+(!!e.fav)+'">'+(e.fav?'★':'☆')+'</button><button data-act="edit-entry" data-v="'+esc(e.id)+'">Изменить</button><button class="dg" data-act="del-entry" data-v="'+esc(e.id)+'">'+(S.confirmDel===e.id?'Точно удалить?':'Удалить')+'</button></div>';
+  }
+  return h+'</div></div>';
+}
+function diaryFiltered(){
+  var q=S.q.trim().toLowerCase();
+  return S.entries.filter(function(e){
+    if(S.tagFilter&&(e.tags||[]).indexOf(S.tagFilter)<0)return false;
+    if(S.fav&&!e.fav)return false;
+    if(q){if(isSealed(e))return false;var hay=((e.text||'')+' '+(e.tags||[]).join(' ')).toLowerCase();if(hay.indexOf(q)<0)return false;}
+    return true;
+  });
+}
+function albumHtml(list){
+  var items=[];S.albumList=[];
+  list.forEach(function(e){if(isSealed(e))return;(e.photos||[]).forEach(function(id){items.push({id:id,e:e});});});
+  if(!items.length)return '<div class="card"><p class="empty" style="padding:6px 0">Здесь соберутся все фото из записей. Нажми «+» внизу и выбери «Фото».</p></div>';
+  var h='<div class="card">',last='';
+  items.forEach(function(it){
+    var i=phaseInfo(it.e.date),key=i?(i.kind+i.tick):'x';
+    var lab=i?(i.kind==='preg'?i.weeks+'-я неделя':(i.months?i.months+' мес.':'первый месяц')):fmtDate(it.e.date);
+    if(key!==last){if(last)h+='</div>';last=key;h+='<div class="month" style="margin-top:14px">'+esc(lab)+'</div><div class="alb">';}
+    S.albumList.push({id:it.id,cap:capFor(it.e)});
+    h+='<button data-act="lb-album" data-v="'+(S.albumList.length-1)+'" aria-label="Открыть фото"><img alt="Фото" data-photo="'+esc(it.id)+'"></button>';
+  });
+  return h+'</div></div>';
+}
+function diaryListHtml(){
+  var list=diaryFiltered();
+  if(S.dview==='album')return albumHtml(list);
+  if(!list.length)return '<div class="card"><p class="empty" style="padding:6px 0">'+(S.entries.length?'Ничего не найдено.':'Здесь будет ваша история: заметки, фото УЗИ, первые шевеления. Начни с одной строки.')+'</p></div>';
+  var last='',h='<div class="card" style="padding-top:4px">';
+  list.forEach(function(e){
+    var d=parse(e.date),key=d.getFullYear()+'-'+d.getMonth();
+    if(key!==last){last=key;h+='<div class="month">'+MONTHS_NOM[d.getMonth()]+' '+d.getFullYear()+'</div>';}
+    h+=entryHtml(e,false);
+  });
+  return h+'</div>';
+}
+function viewDiary(){
+  var used={};S.entries.forEach(function(e){(e.tags||[]).forEach(function(t){used[t]=1;});});
+  var h='<div style="margin-top:12px"><h1>Дневник</h1></div><button class="btn pri big" style="margin-top:12px" data-act="new-entry">Новая запись</button>';
+  h+='<div class="seg" role="group"><button data-act="dview" data-v="feed" aria-pressed="'+(S.dview==='feed')+'">Лента</button><button data-act="dview" data-v="album" aria-pressed="'+(S.dview==='album')+'">Фотоальбом</button></div>';
+  h+='<input type="text" id="d-q" class="search" placeholder="Поиск по записям" aria-label="Поиск по записям" value="'+esc(S.q)+'">';
+  var ut=Object.keys(used);
+  h+='<div class="chips" style="margin-top:12px"><button class="chip tg'+(!S.tagFilter&&!S.fav?' on':'')+'" data-act="tag-filter" data-v="">все</button><button class="chip tg'+(S.fav?' on':'')+'" data-act="fav-filter">★ избранное</button>'+ut.map(function(t){return '<button class="chip tg'+(S.tagFilter===t?' on':'')+'" data-act="tag-filter" data-v="'+esc(t)+'">'+esc(t)+'</button>';}).join('')+'</div>';
+  h+='<div id="dlist">'+diaryListHtml()+'</div>';
+  return h;
+}
+
+/* health */
+function viewHealth(){
+  var info=nowInfo();
+  var h='<div style="margin-top:12px"><h1>Здоровье</h1></div><div class="seg" role="group"><button data-act="who" data-v="mom" aria-pressed="'+(S.healthWho==='mom')+'">Мама</button><button data-act="who" data-v="baby" aria-pressed="'+(S.healthWho==='baby')+'">Малыш</button></div>';
+  h+='<div class="banner" style="margin-top:8px"><b>Где делать и сколько стоит.</b> Условия и цены в клиниках Ташкента подтвердить не удалось, поэтому цифр здесь нет специально. В каждом пункте есть поля «Где» и «Сколько»: заполняй по факту, это ваш личный учёт. Прививки по календарю обычно ставят в поликлинике по месту прикрепления (уточни у педиатра или в СВП). Платные вакцины вне календаря: цену уточняй по телефону.</div>';
+  var items=HEALTH.filter(function(it){return it.who===S.healthWho;});
+  var pos=info?info.tick:0;
+  h+='<div class="card"><div class="list">';
+  items.forEach(function(it){
+    var c=S.checks[it.id]||{},open=S.openItem===it.id;
+    h+='<button class="row k-'+it.kind+'" data-act="open-item" data-v="'+it.id+'" aria-expanded="'+open+'"><div class="t">'+esc(it.title)+'</div><div class="m">'+esc(itemWhen(it))+'</div><div class="chips">'+chipsFor(it,info,pos)+'</div></button>';
+    if(open){
+      h+='<div class="det"><p>'+esc(it.desc)+'</p>'+
+        '<label class="chk"><input type="checkbox" data-field="done" data-id="'+it.id+'"'+(c.done?' checked':'')+'> Сделано</label>'+
+        '<div class="f"><label class="fl">Дата<input type="date" data-field="date" data-id="'+it.id+'" value="'+esc(c.date||'')+'"></label>'+
+        '<label class="fl">Сколько (сум)<input type="text" inputmode="numeric" data-field="price" data-id="'+it.id+'" value="'+esc(c.price||'')+'" maxlength="20"></label></div>'+
+        '<div class="f one"><label class="fl">Где (клиника, врач)<input type="text" data-field="place" data-id="'+it.id+'" value="'+esc(c.place||'')+'" maxlength="120"></label>'+
+        '<label class="fl">Заметка<input type="text" data-field="note" data-id="'+it.id+'" value="'+esc(c.note||'')+'" maxlength="300"></label></div></div>';
+    }
+  });
+  h+='</div></div>';
+  if(S.healthWho==='mom')h+='<p class="note" style="margin-top:14px">Живые вакцины (например, корь-паротит-краснуха, ветряная оспа) во время беременности не ставят: иммунитет к краснухе проверяют заранее. [Международные рекомендации]</p>';
+  else h+='<p class="note" style="margin-top:14px">Источники: листовка календаря на emlash.sanepid.uz и публикация yuz.uz. Календарь может меняться, сверяйся с поликлиникой. Гепатит A в календарь РУз пока не входит; вакцины вне календаря (ветрянка, менингококк и др.) делают по желанию и платно, наличие и цены не проверены.</p>';
+  return h;
+}
+
+/* feeding */
+function viewFeed(){
+  var info=nowInfo(),isBaby=info&&info.kind==='baby',pos=isBaby?info.pos:0;
+  var stage=S.feedStage!=null?S.feedStage:(function(){if(!isBaby)return 1;var idx=0;FEED.forEach(function(f,i){if(pos>=f.from)idx=i;});return idx;})();
+  var h='<div style="margin-top:12px"><h1>Питание малыша</h1>'+(isBaby?'':'<p class="note" style="margin-top:6px">Пригодится после рождения. А пока можно заглянуть вперёд.</p>')+'</div>';
+  h+='<div class="chips" style="margin-top:12px">'+FEED.map(function(f,i){return '<button class="chip tg'+(i===stage?' on':'')+'" data-act="stage" data-v="'+i+'">'+esc(f.title.split(':')[0])+'</button>';}).join('')+'</div>';
+  var f=FEED[stage];
+  h+='<div class="stage" style="--b:var(--'+f.b+')"><h2>'+esc(f.title)+'</h2>'+
+    '<h3 style="margin-top:12px">Можно</h3><ul>'+f.ok.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul>'+
+    '<h3>Осторожно</h3><ul>'+f.care.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul>'+
+    '<h3>Лайфхаки</h3><ul>'+f.hack.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul>'+
+    '<p class="note" style="color:inherit;opacity:.75">Общие рекомендации, в основном по подходу ВОЗ. Схему для твоего малыша определяет педиатр.</p></div>';
+  h+='<div class="card"><div class="sec-h"><h2>Журнал прикорма</h2>'+(isBaby?'<button class="btn sm" data-act="form" data-v="food">Добавить</button>':'')+'</div>';
+  if(!isBaby)h+='<p class="empty">Станет доступен после рождения.</p>';
+  else if(!S.foods.length)h+='<p class="empty">Пока пусто. Записывай каждый новый продукт, дату и реакцию.</p>';
+  else{
+    h+='<div class="list">'+S.foods.map(function(x){
+      return '<div class="row k-tip"><div class="t">'+esc(x.name)+'</div><div class="m">'+esc(fmtDate(x.date))+' · '+esc(x.reaction||'без реакции')+(x.note?' · '+esc(x.note):'')+'</div><div class="acts"><button class="dg" data-act="del-food" data-v="'+esc(x.id)+'">'+(S.confirmDel===x.id?'Точно удалить?':'Удалить')+'</button></div></div>';
+    }).join('')+'</div><p class="note" style="margin-top:8px">Введено продуктов: '+S.foods.length+'</p>';
+  }
+  return h+'</div>';
+}
+
+/* ---------- "Ещё": tools ---------- */
+function bagStats(){
+  var tot=0,done=0;
+  BAG.forEach(function(g){g.i.forEach(function(it){tot++;if(S.checks['bag_'+it[0]]&&S.checks['bag_'+it[0]].done)done++;});});
+  S.bagc.forEach(function(c){tot++;if(c.done)done++;});
+  return {tot:tot,done:done};
+}
+function kickToday(){var t=iso(today0());var r=S.kicks.filter(function(k){return k.id===t;})[0];return r?r.count||0:0;}
+function viewMore(){
+  if(S.tool)return viewTool(S.tool);
+  var info=nowInfo(),preg=info&&info.kind==='preg';
+  var b=bagStats(),nv=nextVisit();
+  var tiles=[
+    ['kicks','👣','Шевеления',preg?'сегодня: '+kickToday():'во время беременности'],
+    ['weight','⚖️','Вес и замеры',S.weights.length?S.weights.length+' '+plural(S.weights.length,'запись','записи','записей'):'график и динамика'],
+    ['labor','⏱️','Схватки','таймер для родов'],
+    ['bag','🧳','Сумка в роддом','собрано '+b.done+' из '+b.tot],
+    ['questions','❓','Вопросы врачу',S.questions.filter(function(q){return !q.done;}).length+' ждут приёма'],
+    ['visits','📅','Визиты',nv?'ближайший: '+fmtShort(nv.date):'записи к врачам'],
+    ['names','💞','Имена',S.names.length?S.names.length+' '+plural(S.names.length,'вариант','варианта','вариантов'):'выбираем вместе'],
+    ['miles','🌟','Первые разы','вехи малыша']
+  ];
+  if(unlockedNotes().length)tiles.push(['notes','💌','Для тебя',unlockedNotes().length+' '+plural(unlockedNotes().length,'записка','записки','записок')]);
+  return '<div style="margin-top:12px"><h1>Ещё</h1></div><div class="tiles">'+tiles.map(function(t){return '<button class="tile" data-act="open-tool" data-v="'+t[0]+'"><span class="e">'+t[1]+'</span><span><b>'+t[2]+'</b><span>'+esc(t[3])+'</span></span></button>';}).join('')+'</div>';
+}
+function backBtn(title){return '<button class="back" data-act="tool-back">← Ещё</button><h1>'+title+'</h1>';}
+function viewTool(t){
+  var info=nowInfo(),preg=info&&info.kind==='preg',h='';
+  if(t==='kicks'){
+    var n=kickToday();
+    h=backBtn('Шевеления')+'<div class="card centered"><p class="note">Нажимай на кнопку при каждом шевелении. Подсчёт обычно советуют ближе к третьему триместру, но способ счёта и норму назначает твой врач.</p>'+
+      '<button class="bigbtn" data-act="kick" aria-label="Добавить шевеление"><small>'+n+'</small>+1 шевеление</button>'+
+      '<button class="btn sm" data-act="kick-undo"'+(n?'':' disabled')+'>−1, нажала по ошибке</button>'+
+      '<p class="note" style="margin-top:14px"><b>Если шевелений стало заметно меньше обычного, не жди: звони врачу или езжай в роддом.</b></p></div>';
+    var rec=S.kicks.slice().sort(function(a,b){return a.id<b.id?1:-1;}).slice(0,7);
+    if(rec.length)h+='<div class="card"><h2>Последние дни</h2><div class="list" style="margin-top:6px">'+rec.map(function(k){return '<div class="row k-tip"><div class="t">'+esc(fmtDate(k.id))+'</div><div class="m">'+(k.count||0)+' '+plural(k.count||0,'шевеление','шевеления','шевелений')+'</div></div>';}).join('')+'</div></div>';
+    if(!preg)h+='<p class="note" style="margin-top:12px">Раздел нужен во время беременности.</p>';
+  }else if(t==='weight'){
+    var who=S.weightWho||(isBabyPhase()?'baby':'mom');
+    var pts=S.weights.filter(function(w){return w.who===who;}).sort(function(a,b){return a.date<b.date?-1:a.date>b.date?1:0;});
+    h=backBtn('Вес и замеры')+'<div class="seg" role="group"><button data-act="wwho" data-v="mom" aria-pressed="'+(who==='mom')+'">Мама</button><button data-act="wwho" data-v="baby" aria-pressed="'+(who==='baby')+'">Малыш</button></div>'+
+      '<div class="card">'+weightChart(pts)+'<button class="btn pri big" style="margin-top:12px" data-act="form" data-v="weight">Добавить замер</button></div>';
+    if(pts.length){h+='<div class="card"><h2>Записи</h2><div class="list" style="margin-top:6px">'+pts.slice().reverse().map(function(w){return '<div class="row k-tip"><div class="t">'+esc(w.kg)+' кг'+(w.cm?' · '+esc(w.cm)+' см':'')+'</div><div class="m">'+esc(fmtDate(w.date))+(who==='mom'?'':'')+'</div><div class="acts"><button class="dg" data-act="del-weight" data-v="'+esc(w.id)+'">'+(S.confirmDel===w.id?'Точно удалить?':'Удалить')+'</button></div></div>';}).join('')+'</div></div>';}
+    h+='<p class="note" style="margin-top:12px">'+(who==='mom'?'Мама: вес, а в поле «см» можно записывать обхват живота. ':'Малыш: вес и рост. ')+'Какая прибавка нормальна, определяет врач.</p>';
+  }else if(t==='labor'){
+    var avg=laborAvg();
+    h=backBtn('Схватки')+'<div class="card centered"><p class="note">Нажми, когда схватка началась, и ещё раз, когда закончилась.</p>'+
+      '<button class="bigbtn'+(C.running?' run':'')+'" data-act="labor"><small id="ctimer">'+(C.running?mmss(Date.now()-C.cur):'00:00')+'</small>'+(C.running?'Закончилась':'Началась')+'</button>'+
+      (avg?'<p><b>Интервал в среднем: '+mmss(avg.int)+'</b> · длится около '+mmss(avg.dur)+' <span class="note">(последние '+avg.n+')</span></p>':'<p class="note">Нужно минимум две схватки, чтобы посчитать интервал.</p>')+
+      '<button class="btn sm" data-act="labor-reset">Сбросить</button></div>'+
+      '<div class="card"><h2>Когда ехать</h2><p>Один из распространённых ориентиров: схватки примерно каждые 5 минут, каждая около минуты, и так около часа. Твой врач или роддом могут назвать другой. Спроси заранее. <span class="note">[Общий ориентир, не указание]</span></p><p><b>Сразу в роддом или скорую:</b> отошли воды, кровянистые выделения, сильная боль без пауз, нет шевелений.</p></div>';
+    if(C.list.length)h+='<div class="card"><h2>Записи</h2><div class="list" style="margin-top:6px">'+C.list.slice().reverse().map(function(x,i){return '<div class="row k-tip"><div class="t">'+new Date(x.start).toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit',second:'2-digit'})+' · длилась '+mmss(x.dur)+'</div><div class="m">'+(x.int?'через '+mmss(x.int)+' после предыдущей':'первая')+'</div></div>';}).join('')+'</div></div>';
+    h+='<p class="note" style="margin-top:12px">Записи схваток хранятся, пока открыта страница.</p>';
+    startLaborTicker();
+  }else if(t==='bag'){
+    var b=bagStats();
+    h=backBtn('Сумка в роддом')+'<div class="card"><b>Собрано '+b.done+' из '+b.tot+'</b><div class="bar"><i style="width:'+(b.tot?b.done*100/b.tot:0)+'%"></i></div><p class="note">Список ориентировочный: у каждого роддома свои требования, уточни у своего.</p></div>';
+    BAG.forEach(function(g){
+      h+='<div class="card"><h2>'+g.g+'</h2><div style="margin-top:4px">'+g.i.map(function(it){var d=S.checks['bag_'+it[0]]&&S.checks['bag_'+it[0]].done;return '<label class="chk"><input type="checkbox" data-bag="'+it[0]+'"'+(d?' checked':'')+'> '+esc(it[1])+'</label>';}).join('')+'</div></div>';
+    });
+    h+='<div class="card"><h2>Свои пункты</h2><div style="margin-top:4px">'+(S.bagc.length?S.bagc.map(function(c){return '<div class="chk"><input type="checkbox" data-bagc="'+esc(c.id)+'"'+(c.done?' checked':'')+'><span style="flex:1">'+esc(c.text)+'</span><button class="back" style="margin:0" data-act="del-bagc" data-v="'+esc(c.id)+'" aria-label="Удалить пункт">'+(S.confirmDel===c.id?'Удалить?':'×')+'</button></div>';}).join(''):'<p class="note">Добавь то, чего нет в списке.</p>')+'</div><button class="btn sm" style="margin-top:10px" data-act="form" data-v="bagitem">Добавить пункт</button></div>';
+  }else if(t==='questions'){
+    h=backBtn('Вопросы врачу')+'<button class="btn pri big" style="margin-top:12px" data-act="form" data-v="question">Новый вопрос</button>';
+    var qs=S.questions.slice().sort(function(a,b){return (a.done?1:0)-(b.done?1:0)||(b.created||0)-(a.created||0);});
+    h+='<div class="card">'+(qs.length?qs.map(function(q){return '<div class="chk"><input type="checkbox" data-q="'+esc(q.id)+'"'+(q.done?' checked':'')+'><span style="flex:1;'+(q.done?'text-decoration:line-through;opacity:.6':'')+'">'+esc(q.text)+'</span><button class="back" style="margin:0" data-act="del-q" data-v="'+esc(q.id)+'" aria-label="Удалить вопрос">'+(S.confirmDel===q.id?'Удалить?':'×')+'</button></div>';}).join(''):'<p class="empty">Записывай сюда вопросы, пока они приходят в голову. На приёме отмечай заданные.</p>')+'</div>';
+  }else if(t==='visits'){
+    h=backBtn('Визиты')+'<button class="btn pri big" style="margin-top:12px" data-act="form" data-v="visit">Добавить визит</button>';
+    var tt=iso(today0());
+    var vs=S.visits.slice().sort(function(a,b){return (a.date+(a.time||''))<(b.date+(b.time||''))?-1:1;});
+    h+='<div class="card">'+(vs.length?'<div class="list">'+vs.map(function(v){var past=v.date<tt;return '<div class="row k-exam" style="'+(past?'opacity:.55':'')+'"><div class="t">'+esc(v.title)+'</div><div class="m">'+esc(fmtDate(v.date))+(v.time?', '+esc(v.time):'')+(v.place?' · '+esc(v.place):'')+'</div>'+(v.note?'<div class="m">'+esc(v.note)+'</div>':'')+'<div class="acts"><button class="dg" data-act="del-visit" data-v="'+esc(v.id)+'">'+(S.confirmDel===v.id?'Точно удалить?':'Удалить')+'</button></div></div>';}).join('')+'</div>':'<p class="empty">Здесь будут приёмы, УЗИ и анализы. Ближайший визит покажется на главной.</p>')+'</div>';
+  }else if(t==='names'){
+    h=backBtn('Имена')+'<p class="note">Добавляйте варианты. 👩 — голос мамы, 👨 — голос папы. Когда голоса совпадут, будет сюрприз.</p><button class="btn pri big" style="margin-top:8px" data-act="form" data-v="name">Добавить имя</button>';
+    var ns=S.names.slice().sort(function(a,b){return (b.votes||[]).length-(a.votes||[]).length||(a.name<b.name?-1:1);});
+    h+='<div class="card">'+(ns.length?'<div class="list">'+ns.map(function(n){var vm=(n.votes||[]).indexOf('mom')>=0,vd=(n.votes||[]).indexOf('dad')>=0;return '<div class="row k-prep" style="display:flex;align-items:center;gap:12px"><div style="flex:1"><div class="t">'+esc(n.name)+'</div>'+(n.note?'<div class="m">'+esc(n.note)+'</div>':'')+'<div class="acts"><button class="dg" data-act="del-name" data-v="'+esc(n.id)+'">'+(S.confirmDel===n.id?'Точно удалить?':'Удалить')+'</button></div></div><div style="display:flex;gap:6px"><button class="vote'+(vm?' on':'')+'" data-act="vote" data-v="'+esc(n.id)+'" data-w="mom" aria-pressed="'+vm+'" aria-label="Голос мамы">👩 '+(vm?'❤️':'🤍')+'</button><button class="vote'+(vd?' on':'')+'" data-act="vote" data-v="'+esc(n.id)+'" data-w="dad" aria-pressed="'+vd+'" aria-label="Голос папы">👨 '+(vd?'❤️':'🤍')+'</button></div></div>';}).join('')+'</div>':'<p class="empty">Пока ни одного варианта.</p>')+'</div>';
+  }else if(t==='miles'){
+    var pos=info&&info.kind==='baby'?info.months:-1;
+    h=backBtn('Первые разы')+'<p class="note">Возрастные рамки очень широкие: каждый малыш развивается в своём темпе. Если что-то тревожит, обсуди с педиатром.</p><div class="card"><div class="list">'+MILES.map(function(m){
+      var c=S.checks['ms_'+m.id]||{};
+      return '<div class="row k-tip"><label class="chk" style="margin-top:0"><input type="checkbox" data-ms="'+m.id+'"'+(c.done?' checked':'')+'><span><b>'+esc(m.t)+'</b><br><span class="note">обычно '+m.from+'–'+m.to+' мес.'+(c.done&&c.date?' · '+esc(fmtDate(c.date)):'')+'</span></span></label></div>';
+    }).join('')+'</div></div><p class="note" style="margin-top:12px">Отметила веху? Запиши её ещё и в дневник с фото, тегом «первые разы».</p>';
+  }
+  if(t==='notes'){
+    h=backBtn('Для тебя')+'<div class="card">'+unlockedNotes().map(function(n){return '<div class="row k-prep"><div class="m">'+esc(fmtDate(n.date))+'</div><div class="t" style="font-family:var(--serif);font-style:italic;font-weight:600;white-space:pre-wrap">'+esc(n.text)+'</div></div>';}).join('')+'</div>';
+  }
+  return h;
+}
+function weightChart(pts){
+  if(pts.length<2)return '<p class="empty" style="padding:6px 0">'+(pts.length?'Ещё один замер, и появится график.':'Добавь первый замер, и здесь появится график.')+'</p>';
+  var W=320,H=150,px=30,py=18;
+  var vals=pts.map(function(p){return parseFloat(p.kg);}).filter(function(v){return isFinite(v);});
+  if(vals.length<2)return '';
+  var mn=Math.min.apply(null,vals),mx=Math.max.apply(null,vals);if(mx===mn){mx+=1;mn-=1;}
+  var t0=parse(pts[0].date).getTime(),t1=parse(pts[pts.length-1].date).getTime();if(t1===t0)t1=t0+DAY;
+  var xy=pts.map(function(p){var x=px+(parse(p.date).getTime()-t0)/(t1-t0)*(W-px-14),y=py+(1-(parseFloat(p.kg)-mn)/(mx-mn))*(H-py*2);return [x,y,p];});
+  var line=xy.map(function(a){return a[0].toFixed(1)+','+a[1].toFixed(1);}).join(' ');
+  return '<svg class="chart" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="График веса">'+
+    '<line class="gl" x1="'+px+'" y1="'+py+'" x2="'+(W-8)+'" y2="'+py+'"/><line class="gl" x1="'+px+'" y1="'+(H-py)+'" x2="'+(W-8)+'" y2="'+(H-py)+'"/>'+
+    '<text x="2" y="'+(py+4)+'">'+mx.toFixed(1)+'</text><text x="2" y="'+(H-py+4)+'">'+mn.toFixed(1)+'</text>'+
+    '<polyline class="ln" points="'+line+'"/>'+xy.map(function(a){return '<circle class="pt" cx="'+a[0].toFixed(1)+'" cy="'+a[1].toFixed(1)+'" r="4"/>';}).join('')+
+    '<text x="'+px+'" y="'+(H-2)+'">'+esc(fmtShort(pts[0].date))+'</text><text x="'+(W-8)+'" y="'+(H-2)+'" text-anchor="end">'+esc(fmtShort(pts[pts.length-1].date))+'</text></svg>';
+}
+function laborAvg(){
+  var l=C.list.filter(function(x){return x.int;}).slice(-5);
+  if(!l.length)return null;
+  var si=0,sd=0;l.forEach(function(x){si+=x.int;sd+=x.dur;});
+  return {int:si/l.length,dur:sd/l.length,n:l.length};
+}
+function startLaborTicker(){
+  clearInterval(C.timer);
+  C.timer=setInterval(function(){
+    var el=document.getElementById('ctimer');
+    if(!el){clearInterval(C.timer);return;}
+    if(C.running)el.textContent=mmss(Date.now()-C.cur);
+  },500);
+}
+
+/* ---------- forms / sheets ---------- */
+var FORMS={
+  food:{title:'Новый продукт',fields:[
+    {k:'name',l:'Продукт',t:'text',ph:'Например, кабачок',req:1,max:60},
+    {k:'date',l:'Дата',t:'date',def:function(){return iso(today0());}},
+    {k:'reaction',l:'Реакция',t:'select',opts:['без реакции','сыпь или покраснение','беспокойство, колики','стул изменился','отказался','другое']},
+    {k:'note',l:'Заметка',t:'text',max:200}],
+    hint:'Если реакция тяжёлая (отёк, затруднённое дыхание), нужна срочная помощь, а не запись в дневнике.',
+    save:function(v){return Store.set('foods',uid(),v);}},
+  visit:{title:'Новый визит',fields:[
+    {k:'title',l:'Что за визит',t:'text',ph:'Например, УЗИ или приём врача',req:1,max:80},
+    {k:'date',l:'Дата',t:'date',req:1,def:function(){return iso(today0());}},
+    {k:'time',l:'Время',t:'time'},
+    {k:'place',l:'Где',t:'text',max:120},
+    {k:'note',l:'Заметка',t:'text',max:200}],
+    save:function(v){return Store.set('visits',uid(),v);}},
+  question:{title:'Вопрос врачу',fields:[{k:'text',l:'Вопрос',t:'text',req:1,max:300}],
+    save:function(v){return Store.set('questions',uid(),{text:v.text,done:false,created:Date.now()});}},
+  name:{title:'Новое имя',fields:[{k:'name',l:'Имя',t:'text',req:1,max:40},{k:'note',l:'Почему нравится (по желанию)',t:'text',max:120}],
+    save:function(v){return Store.set('names',uid(),{name:v.name,note:v.note,votes:[]});}},
+  weight:{title:'Новый замер',fields:[
+    {k:'date',l:'Дата',t:'date',req:1,def:function(){return iso(today0());}},
+    {k:'kg',l:'Вес, кг',t:'num',req:1,ph:'например, 62,4'},
+    {k:'cm',l:'Рост малыша или обхват живота, см (по желанию)',t:'num'}],
+    save:function(v,x){return Store.set('weights',uid(),{date:v.date,kg:v.kg,cm:v.cm||'',who:x&&x.who||'mom'});}},
+  bagitem:{title:'Свой пункт в сумку',fields:[{k:'text',l:'Что добавить',t:'text',req:1,max:80}],
+    save:function(v){return Store.set('bagc',uid(),{text:v.text,done:false});}}
+};
+function renderSheet(){
+  var s=S.sheet,el=$('#sheet');
+  if(!s){el.innerHTML='';return;}
+  var h='<div class="ov" data-act="sheet-bg"><div class="sheet" role="dialog" aria-modal="true">';
+  if(s.type==='entry'){
+    var d=s.data,pl=prompts();
+    var tmr=iso(new Date(today0().getTime()+DAY));
+    h+='<div class="sheet-h"><h2>'+(d.id?'Изменить запись':'Новая запись')+'</h2><button class="icon-btn" data-act="sheet-close" aria-label="Закрыть">✕</button></div>'+
+      '<label class="fl">Дата<input type="date" id="e-date" value="'+esc(d.date)+'" max="'+iso(today0())+'"></label>'+
+      '<div class="mood" role="group" aria-label="Настроение">'+MOODS.map(function(m,i){return '<button data-act="mood" data-v="'+i+'" class="'+(d.mood===i?'on':'')+'" aria-label="'+m[1]+'" aria-pressed="'+(d.mood===i)+'">'+m[0]+'</button>';}).join('')+'</div>'+
+      '<label class="fl" style="margin-top:10px">Запись<textarea id="e-text" placeholder="'+esc(pl[d.pi%pl.length])+'">'+esc(d.text)+'</textarea></label>'+
+      '<p class="hint"><button class="back" style="margin:0;font-size:13px" data-act="prompt-next">Другая подсказка</button>'+(d.id?'':' · черновик сохраняется сам')+'</p>'+
+      '<div class="thumbs">'+d.photos.map(function(p,i){return '<div class="thumb">'+(p.data?'<img alt="Фото" src="'+(p.thumb||p.data)+'">':'<img alt="Фото" data-photo="'+esc(p.id)+'">')+'<button data-act="photo-rm" data-v="'+i+'" aria-label="Убрать фото">×</button></div>';}).join('')+'</div>'+
+      '<div style="margin-top:12px"><label class="btn" style="cursor:pointer;display:inline-flex;align-items:center">📷 Добавить фото<input type="file" id="e-file" accept="image/*" multiple hidden></label></div>'+
+      '<p class="hint">Фото сжимаются автоматически. До 6 фото на запись.</p>'+
+      '<div class="chips" style="margin-top:6px">'+TAGS.map(function(t){return '<button class="chip tg'+(d.tags.indexOf(t)>=0?' on':'')+'" data-act="tag" data-v="'+esc(t)+'">'+esc(t)+'</button>';}).join('')+'</div>'+
+      '<label class="fl" style="margin-top:14px;display:block">💌 Письмо в будущее: запечатать до (по желанию)<input type="date" id="e-seal" min="'+tmr+'" value="'+esc(d.seal||'')+'"></label>'+
+      '<p class="hint">Запись спрячется до этой даты, например до дня рождения малыша. Это замок в приложении, а не шифрование.</p>'+
+      '<button class="btn pri big" data-act="entry-save"'+(s.busy?' disabled':'')+'>'+(s.busy?'Сохраняем…':'Сохранить')+'</button>';
+  }else if(s.type==='form'){
+    var f=FORMS[s.kind];
+    h+='<div class="sheet-h"><h2>'+esc(f.title)+'</h2><button class="icon-btn" data-act="sheet-close" aria-label="Закрыть">✕</button></div>';
+    f.fields.forEach(function(x,i){
+      var id='ff-'+x.k,def=x.def?x.def():'';
+      var inp=x.t==='select'?'<select id="'+id+'">'+x.opts.map(function(o){return '<option>'+esc(o)+'</option>';}).join('')+'</select>':
+        '<input id="'+id+'" type="'+(x.t==='num'?'text':x.t)+'"'+(x.t==='num'?' inputmode="decimal"':'')+(x.max?' maxlength="'+x.max+'"':'')+(x.ph?' placeholder="'+esc(x.ph)+'"':'')+' value="'+esc(def)+'">';
+      h+='<label class="fl"'+(i?' style="margin-top:10px;display:block"':'')+'>'+esc(x.l)+inp+'</label>';
+    });
+    if(f.hint)h+='<p class="hint">'+esc(f.hint)+'</p>';
+    h+='<button class="btn pri big" data-act="form-save">Сохранить</button>';
+  }else if(s.type==='settings'){
+    var p=S.profile;
+    h+='<div class="sheet-h"><h2>Настройки</h2><button class="icon-btn" data-act="sheet-close" aria-label="Закрыть">✕</button></div>';
+    h+='<h3>Где хранятся записи</h3><p>Только на этом телефоне, в памяти приложения. Входа и облака нет: твои записи никто не видит, но если телефон потеряется или данные приложения очистятся, они пропадут. Поэтому раз в две недели нажимай «Сохранить копию» и отправляй файл себе в Telegram или в облако.</p>';
+    h+='<h3 style="margin-top:16px">О тебе и малыше</h3>';
+    h+='<label class="fl">Как тебя называть<input type="text" id="s-mom" maxlength="30" value="'+esc(p.momName||'')+'"></label>';
+    if(p.dueDate)h+='<label class="fl" style="margin-top:8px;display:block">Предполагаемая дата родов<input type="date" id="s-due" value="'+esc(p.dueDate)+'"></label>';
+    h+='<label class="fl" style="margin-top:8px;display:block">Дата рождения малыша<input type="date" id="s-birth" value="'+esc(p.birthDate||'')+'" max="'+iso(today0())+'"></label>';
+    h+='<label class="fl" style="margin-top:8px;display:block">Имя малыша<input type="text" id="s-name" maxlength="40" value="'+esc(p.babyName||'')+'"></label>';
+    h+='<p class="hint">Малыш родился? Укажи дату рождения, и приложение переключится на возраст малыша. Все записи сохранятся.</p>';
+    h+='<button class="btn pri" style="margin-top:10px" data-act="settings-save">Сохранить</button>';
+    h+='<h3 style="margin-top:20px">Копии</h3><div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:6px"><button class="btn pri" data-act="backup-now">Сохранить копию (всё с фото)</button><button class="btn" data-act="export-md">Текст дневника (.md)</button><label class="btn" style="cursor:pointer;display:inline-flex;align-items:center">Восстановить из копии<input type="file" id="imp-file" accept=".json,application/json" hidden></label></div><p class="hint">Копия: '+(lastBackup()?'сохранена '+fmtDate(iso(new Date(lastBackup())))+'.':'ещё не делалась.')+' Чтобы перенести дневник на новый телефон, сохрани копию на старом и восстанови на новом.</p>';
+    h+='<h3 style="margin-top:20px">Удобство</h3><button class="btn" style="margin-top:6px" data-act="big">'+(document.documentElement.classList.contains('big')?'Вернуть обычный шрифт':'Крупный шрифт')+'</button>';
+    h+='<p class="note" style="margin-top:20px">Справочные сведения не заменяют консультацию врача.</p><p class="note" style="margin-top:6px;text-align:center" data-act="foot">Сделано с любовью ❤️</p>';
+  }
+  if(s.type==='letter'){
+    var dd=togetherDays();
+    h+='<div class="sheet-h"><h2>'+esc(s.title||'Для тебя')+'</h2><button class="icon-btn" data-act="sheet-close" aria-label="Закрыть">✕</button></div>'+
+      '<div class="letter">'+esc(s.text+signTxt())+'</div>'+(dd!=null?'<p class="note" style="margin-top:14px">Мы вместе уже '+dd+' '+plural(dd,'день','дня','дней')+' ❤️</p>':'')+
+      '<button class="btn pri big" data-act="sheet-close">Спасибо, любимый</button>';
+  }
+  if(s.type==='papa'){
+    var lv=s.data;
+    h+='<div class="sheet-h"><h2>Папин режим 💌</h2><button class="icon-btn" data-act="sheet-close" aria-label="Закрыть">✕</button></div>'+
+      '<p class="hint" style="margin-top:0">Здесь ты готовишь сюрпризы на СВОЁМ телефоне. Заполни всё, нажми «Скачать love.json» и положи файл рядом с приложением на хостинге (подробнее в README). У неё всё появится само: записки в выбранную дату, письмо по секретному нажатию. Важно: скрыто это только в интерфейсе, файл любой может открыть по адресу.</p>'+
+      '<label class="fl">Подпись (например, «Твой муж»)<input type="text" id="pp-sign" maxlength="40" value="'+esc(lv.sign||'')+'"></label>'+
+      '<label class="fl" style="margin-top:10px;display:block">Первое письмо: она увидит его один раз при открытии<textarea id="pp-welcome" style="min-height:90px" maxlength="1500">'+esc(lv.welcome||'')+'</textarea></label>'+
+      '<label class="fl" style="margin-top:10px;display:block">Секретное письмо (откроется, если 5 раз нажать на название вверху)<textarea id="pp-letter" style="min-height:90px" maxlength="1500" placeholder="Оставь пустым: покажется стандартный текст">'+esc(lv.letter||'')+'</textarea></label>'+
+      '<label class="fl" style="margin-top:10px;display:block">Мы вместе с (дата)<input type="date" id="pp-together" value="'+esc(lv.together||'')+'"></label>'+
+      '<label class="fl" style="margin-top:10px;display:block">Годовщина (поздравление в этот день каждый год)<input type="date" id="pp-anniv" value="'+esc(lv.anniv||'')+'"></label>'+
+      '<label class="fl" style="margin-top:10px;display:block">Её день рождения<input type="date" id="pp-herBday" value="'+esc(lv.herBday||'')+'"></label>'+
+      '<h3 style="margin-top:18px">Записки по датам</h3><div class="list" style="margin-top:6px">'+(lv.notes||[]).slice().sort(function(a,b){return a.date<b.date?-1:1;}).map(function(n){return '<div class="row k-prep"><div class="m">'+esc(fmtDate(n.date))+(n.date<=iso(today0())?' · уже видна':' · ждёт')+'</div><div class="t" style="white-space:pre-wrap">'+esc(n.text)+'</div><div class="acts"><button class="dg" data-act="papa-note-del" data-v="'+esc(n.id)+'">Удалить</button></div></div>';}).join('')+'</div>'+
+      '<label class="fl" style="margin-top:10px;display:block">Новая записка: дата<input type="date" id="pn-date" value="'+iso(today0())+'"></label>'+
+      '<label class="fl" style="margin-top:8px;display:block">Текст<textarea id="pn-text" style="min-height:70px" maxlength="500"></textarea></label>'+
+      '<button class="btn sm" style="margin-top:8px" data-act="papa-note-add">Добавить записку</button>'+
+      '<button class="btn pri big" data-act="papa-export">Скачать love.json</button><button class="btn big" style="margin-top:8px" data-act="papa-save">Сохранить у себя</button>';
+  }
+  h+='</div></div>';
+  el.innerHTML=h;
+  hydratePhotos();
+}
+
+/* ---------- photos ---------- */
+var photoQ=[],photoActive=0,photoObs=null;
+function pump(){while(photoActive<4&&photoQ.length){photoActive++;photoQ.shift()();}}
+function loadPhoto(id){
+  if(photoCache.has(id))return Promise.resolve(photoCache.get(id));
+  var pr=photoPending.get(id);if(pr)return pr;
+  pr=new Promise(function(res){
+    photoQ.push(function(){
+      Store.get('photos',id).then(function(r){if(r&&r.data)photoCache.set(id,{data:r.data,thumb:r.thumb||null});res(photoCache.get(id)||null);},function(){res(null);}).then(function(){photoActive--;pump();});
+    });
+    pump();
+  });
+  photoPending.set(id,pr);
+  pr.then(function(){photoPending.delete(id);});
+  return pr;
+}
+function setImg(img,id){loadPhoto(id).then(function(p){if(p&&document.contains(img)&&!img.getAttribute('src'))img.src=p.thumb||p.data;});}
+function hydratePhotos(){
+  if(!photoObs&&typeof IntersectionObserver!=='undefined'){
+    photoObs=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){photoObs.unobserve(en.target);setImg(en.target,en.target.getAttribute('data-photo'));}});},{rootMargin:'250px'});
+  }
+  document.querySelectorAll('img[data-photo]').forEach(function(img){
+    if(img.getAttribute('src'))return;
+    var id=img.getAttribute('data-photo');
+    if(photoCache.has(id)){var p=photoCache.get(id);img.src=p.thumb||p.data;return;}
+    if(photoObs)photoObs.observe(img);else setImg(img,id);
+  });
+}
+function scaled(img,max,q){
+  var sc=Math.min(1,max/Math.max(img.naturalWidth,img.naturalHeight));
+  var c=document.createElement('canvas');
+  c.width=Math.max(1,Math.round(img.naturalWidth*sc));c.height=Math.max(1,Math.round(img.naturalHeight*sc));
+  c.getContext('2d').drawImage(img,0,0,c.width,c.height);
+  return c.toDataURL('image/jpeg',q);
+}
+function compress(file){
+  var url=URL.createObjectURL(file);
+  return new Promise(function(res,rej){
+    var img=new Image();
+    img.onload=function(){
+      try{
+        var max=1280,q=0.78,out=null,i;
+        for(i=0;i<10;i++){var data=scaled(img,max,q);if(data.length<=185000){out=data;break;}if(q>0.5)q-=0.08;else max=Math.round(max*0.8);}
+        var th=null,tq=0.72,tm=360;
+        for(i=0;i<6;i++){var t=scaled(img,tm,tq);if(t.length<=30000){th=t;break;}tq-=0.1;if(tq<0.4){tq=0.5;tm=Math.round(tm*0.8);}}
+        URL.revokeObjectURL(url);
+        out?res({data:out,thumb:th}):rej(new Error('big'));
+      }catch(e){URL.revokeObjectURL(url);rej(e);}
+    };
+    img.onerror=function(){URL.revokeObjectURL(url);rej(new Error('load'));};
+    img.src=url;
+  });
+}
+function compressMany(files){
+  var out=[],ch=Promise.resolve();
+  files.forEach(function(f){ch=ch.then(function(){return compress(f).then(function(d){out.push({data:d.data,thumb:d.thumb});},function(){toast('Не удалось обработать одно из фото (формат не поддерживается).');});});});
+  return ch.then(function(){return out;});
+}
+/* lightbox */
+function openLb(list,i){if(!list||!list.length)return;S.lb={list:list,i:i};renderLb();}
+function closeLb(){S.lb=null;renderLb();}
+function navLb(d){if(!S.lb)return;var n=S.lb.list.length;S.lb.i=(S.lb.i+d+n)%n;renderLb();}
+function renderLb(){
+  var el=document.getElementById('lb');
+  if(!S.lb){el.innerHTML='';return;}
+  var it=S.lb.list[S.lb.i],n=S.lb.list.length;
+  el.innerHTML='<div class="lb" data-act="lb-bg" role="dialog" aria-modal="true" aria-label="Просмотр фото"><button class="x" data-act="lb-close" aria-label="Закрыть">✕</button>'+
+    (n>1?'<button class="pv" data-act="lb-prev" aria-label="Назад">‹</button><button class="nx" data-act="lb-next" aria-label="Дальше">›</button>':'')+
+    '<img id="lb-img" alt="Фото"><div class="cap">'+esc(it.cap||'')+(n>1?' · '+(S.lb.i+1)+' из '+n:'')+'</div></div>';
+  var im=document.getElementById('lb-img'),p0=photoCache.get(it.id);
+  if(p0&&p0.thumb)im.src=p0.thumb;
+  loadPhoto(it.id).then(function(p){var cur=document.getElementById('lb-img');if(cur&&p&&S.lb&&S.lb.list[S.lb.i].id===it.id)cur.src=p.data;});
+}
+
+/* ---------- actions ---------- */
+function loadDraft(){var r=lsGet('md-draft');if(!r)return null;try{return JSON.parse(r);}catch(e){return null;}}
+function syncEntryFields(){
+  var d=S.sheet.data,t=$('#e-text'),dt=$('#e-date'),sl=$('#e-seal');
+  if(t)d.text=t.value;if(dt&&dt.value)d.date=dt.value;if(sl)d.seal=sl.value;
+}
+function saveDraft(){
+  var s=S.sheet;if(!s||s.type!=='entry'||s.data.id)return;
+  syncEntryFields();var d=s.data;
+  if((d.text&&d.text.trim())||d.mood!=null||d.tags.length)lsSet('md-draft',JSON.stringify({text:d.text,tags:d.tags,mood:d.mood,date:d.date,seal:d.seal||''}));
+  else lsDel('md-draft');
+}
+function openEntry(e,prefill,photos){
+  var pl=prompts(),data;
+  if(e){data={id:e.id,date:e.date,text:e.text||'',tags:(e.tags||[]).slice(),mood:typeof e.mood==='number'?e.mood:null,seal:e.sealUntil||'',fav:!!e.fav,pi:dayNum()%pl.length,photos:(e.photos||[]).map(function(id){return {id:id};}),removed:[]};}
+  else{
+    data={id:null,date:iso(today0()),text:prefill||'',tags:[],mood:null,seal:'',fav:false,pi:dayNum()%pl.length,photos:photos||[],removed:[]};
+    var dr=prefill?null:loadDraft();
+    if(dr){data.text=dr.text||'';data.tags=dr.tags||[];data.mood=typeof dr.mood==='number'?dr.mood:null;data.seal=dr.seal||'';if(dr.date&&dr.date<=iso(today0()))data.date=dr.date;toast('Черновик восстановлен');}
+  }
+  S.sheet={type:'entry',busy:false,data:data};renderSheet();
+}
+function saveEntry(){
+  var s=S.sheet;if(!s||s.busy)return;
+  syncEntryFields();
+  var d=s.data;
+  d.date=d.date||iso(today0());
+  if(!d.text.trim()&&!d.photos.length&&d.mood==null){toast('Добавь текст, фото или настроение.');return;}
+  s.busy=true;renderSheet();
+  var id=d.id||uid(),ids=[],chain=Promise.resolve(),first=!S.entries.length&&!d.id;
+  d.photos.forEach(function(p){
+    if(p.data){var pid=uid();ids.push(pid);chain=chain.then(function(){return Store.set('photos',pid,{data:p.data,thumb:p.thumb||'',t:Date.now()});}).then(function(){photoCache.set(pid,{data:p.data,thumb:p.thumb||null});});}
+    else ids.push(p.id);
+  });
+  var doc={date:d.date,text:d.text.trim(),tags:d.tags,mood:d.mood,photos:ids,fav:!!d.fav,updated:Date.now()};
+  if(d.seal&&d.seal>iso(today0()))doc.sealUntil=d.seal;
+  chain.then(function(){return Store.set('entries',id,doc);})
+   .then(function(){return Promise.all((d.removed||[]).map(function(r){return Store.del('photos',r).catch(function(){});}));})
+   .then(function(){
+     if(!d.id)lsDel('md-draft');
+     S.sheet=null;renderSheet();
+     if(first){hearts(22);toast('Первая запись! Это будет самая красивая книга ❤️');}
+     else if(/люблю/i.test(d.text)){hearts(16);toast('Записано 💗');}
+     else toast('Записано 💗');
+   })
+   .catch(function(e){s.busy=false;renderSheet();toast(e&&e.code==='quota_exceeded'?'Хранилище заполнено. Сделай экспорт и удали лишнее.':'Не удалось сохранить. Попробуй ещё раз.');});
+}
+function readPapa(){
+  var d=S.sheet.data;
+  ['sign','together','anniv','herBday'].forEach(function(k){var el=$('#pp-'+k);if(el)d[k]=el.value.trim();});
+  ['welcome','letter'].forEach(function(k){var el=$('#pp-'+k);if(el)d[k]=el.value.trim();});
+}
+function papaExport(){
+  readPapa();
+  var d=Object.assign({},S.sheet.data);delete d.id;
+  saveFile('love.json',JSON.stringify(d,null,1),'application/json').then(function(){toast('Файл love.json готов. Загрузи его на хостинг вместо старого.');});
+}
+function papaSave(){
+  readPapa();
+  var d=Object.assign({},S.sheet.data);delete d.id;
+  Store.set('meta','love',d).then(function(){S.love=Object.assign({id:'love'},d);S.sheet=null;renderSheet();renderMain();toast('Сюрпризы сохранены 💌');}).catch(function(){toast('Не удалось сохранить.');});
+}
+function toggleFav(id){
+  var e=S.entries.filter(function(x){return x.id===id;})[0];if(!e)return;
+  var doc=Object.assign({},e);delete doc.id;doc.fav=!e.fav;e.fav=doc.fav;
+  renderMain();
+  Store.set('entries',id,doc).catch(function(){toast('Не удалось сохранить.');});
+}
+function deleteEntry(id){
+  if(S.confirmDel!==id){S.confirmDel=id;renderMain();return;}
+  S.confirmDel=null;
+  var e=S.entries.filter(function(x){return x.id===id;})[0];
+  Store.del('entries',id).then(function(){return Promise.all(((e&&e.photos)||[]).map(function(p){return Store.del('photos',p).catch(function(){});}));}).then(function(){toast('Запись удалена');}).catch(function(){toast('Не удалось удалить.');});
+}
+function genericDel(coll,id){
+  if(S.confirmDel!==id){S.confirmDel=id;renderMain();return;}
+  S.confirmDel=null;
+  Store.del(coll,id).catch(function(){toast('Не удалось удалить.');});
+}
+function saveProfile(p,msg){
+  return Store.set('meta','profile',p).then(function(){S.profile=Object.assign({id:'profile'},p);renderAll();if(msg)toast(msg);});
+}
+function onbSave(){
+  var date=($('#ob-date')||{}).value;
+  if(!date){toast('Укажи дату.');return;}
+  var t=today0(),d=parse(date),p={createdAt:Date.now(),momName:(($('#ob-mom')||{}).value||'').trim()};
+  if(S.onb.who==='preg'){
+    var kind=$('#ob-kind').value;
+    var due=kind==='lmp'?new Date(d.getTime()+280*DAY):d;
+    var diff=Math.round((due-t)/DAY);
+    if(diff<-14||diff>290){toast('Дата выглядит неверной. Проверь, пожалуйста.');return;}
+    p.dueDate=iso(due);
+  }else{
+    if(d>t){toast('Дата рождения не может быть в будущем.');return;}
+    p.birthDate=date;p.babyName=($('#ob-name').value||'').trim();
+  }
+  saveProfile(p).catch(function(){toast('Не удалось сохранить.');});
+}
+function settingsSave(){
+  var hadBirth=!!S.profile.birthDate;
+  var p=Object.assign({},S.profile);delete p.id;
+  var due=$('#s-due'),birth=$('#s-birth'),name=$('#s-name'),mom=$('#s-mom');
+  if(due&&due.value)p.dueDate=due.value;
+  if(birth){if(birth.value){if(parse(birth.value)>today0()){toast('Дата рождения не может быть в будущем.');return;}p.birthDate=birth.value;}else delete p.birthDate;}
+  p.babyName=(name.value||'').trim();p.momName=(mom.value||'').trim();
+  S.viewIdx=null;
+  saveProfile(p,'Сохранено').then(function(){S.sheet=null;renderSheet();if(p.birthDate&&!hadBirth){hearts(28);toast('Поздравляю, мамочка! Я тебя люблю ❤️');}}).catch(function(){toast('Не удалось сохранить.');});
+}
+function saveCheck(id,field,val){
+  var c=Object.assign({},S.checks[id]||{});
+  c[field]=val;
+  if(field==='done'&&val&&!c.date)c.date=iso(today0());
+  S.checks[id]=c;
+  Store.set('checks',id,c).catch(function(){toast('Не удалось сохранить отметку.');});
+  if(field==='done')renderMain();
+}
+function formSave(){
+  var s=S.sheet,f=FORMS[s.kind],vals={};
+  for(var i=0;i<f.fields.length;i++){
+    var x=f.fields[i],el=document.getElementById('ff-'+x.k),v=el?el.value.trim():'';
+    if(x.t==='num'){v=v.replace(',','.');if(v&&!isFinite(parseFloat(v))){toast('Введи число.');return;}if(v)v=String(parseFloat(v));}
+    if(x.req&&!v){toast('Заполни поле «'+x.l+'».');return;}
+    vals[x.k]=v;
+  }
+  var extra=s.extra;
+  f.save(vals,extra).then(function(){S.sheet=null;renderSheet();toast('Добавлено');}).catch(function(){toast('Не удалось сохранить.');});
+}
+function kickAdd(d){
+  var t=iso(today0()),n=Math.max(0,kickToday()+d);
+  var r=S.kicks.filter(function(k){return k.id===t;})[0];
+  if(r)r.count=n;else S.kicks.push({id:t,count:n});
+  renderMain();
+  kickChain=kickChain.then(function(){return Store.set('kicks',t,{count:n,updated:Date.now()});}).catch(function(){toast('Не удалось сохранить шевеление.');});
+}
+function laborToggle(){
+  var now=Date.now();
+  if(!C.running){C.running=true;C.cur=now;}
+  else{
+    var prev=C.list.length?C.list[C.list.length-1].start:null;
+    C.list.push({start:C.cur,dur:now-C.cur,int:prev?C.cur-prev:0});
+    C.running=false;
+  }
+  renderMain();
+}
+function saveFile(name,text,mime){
+  var blob=new Blob([text],{type:mime||'application/octet-stream'});
+  function dl(){var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(function(){try{URL.revokeObjectURL(a.href);}catch(e){}if(a.parentNode)a.parentNode.removeChild(a);},1500);}
+  var file=null;try{file=new File([blob],name,{type:blob.type});}catch(e){}
+  if(file&&navigator.canShare&&navigator.share&&navigator.canShare({files:[file]})){
+    return navigator.share({files:[file],title:name}).then(function(){return true;},function(e){if(e&&e.name==='AbortError')return false;dl();return true;});
+  }
+  dl();return Promise.resolve(true);
+}
+function exportMd(){
+  var p=S.profile||{},lines=['# Дневник','',p.dueDate?'ПДР: '+fmtDate(p.dueDate):'',p.birthDate?'Дата рождения: '+fmtDate(p.birthDate):'',''];
+  S.entries.slice().reverse().forEach(function(e){
+    if(isSealed(e))return;
+    var i=phaseInfo(e.date);
+    lines.push('## '+fmtDate(e.date)+(i?' ('+phaseLabel(i)+')':'')+(typeof e.mood==='number'&&MOODS[e.mood]?' '+MOODS[e.mood][0]:''));
+    if(e.text)lines.push('',e.text);
+    if((e.tags||[]).length)lines.push('','Теги: '+e.tags.join(', '));
+    if((e.photos||[]).length)lines.push('','Фото: '+e.photos.length+' (есть в полной копии)');
+    lines.push('');
+  });
+  return saveFile('dnevnik.md',lines.join('\n'),'text/plain');
+}
+function exportJson(){
+  var ids=[];S.entries.forEach(function(e){(e.photos||[]).forEach(function(p){ids.push(p);});});
+  toast('Готовим копию…');
+  return Promise.all(ids.map(function(id){return Store.get('photos',id).then(function(r){return [id,r&&r.data?{data:r.data,thumb:r.thumb||''}:null];}).catch(function(){return [id,null];});})).then(function(pairs){
+    var photos={};pairs.forEach(function(x){if(x[1])photos[x[0]]=x[1];});
+    var data=JSON.stringify({app:'mama-diary',version:4,exported:Date.now(),profile:S.profile,entries:S.entries,checks:S.checks,foods:S.foods,kicks:S.kicks,weights:S.weights,questions:S.questions,visits:S.visits,names:S.names,bagc:S.bagc,photos:photos});
+    var d=new Date();
+    return saveFile('dnevnik-kopiya-'+iso(d)+'.json',data,'application/json');
+  }).then(function(done){if(done){lsSet('md-lastbk',String(Date.now()));renderTop();renderMain();toast('Копия готова. Сохрани файл в Telegram или в облако.');}}).catch(function(){toast('Не удалось сделать копию.');});
+}
+function importFile(file){
+  if(!file)return;
+  var fr=new FileReader();
+  fr.onload=function(){
+    var j;try{j=JSON.parse(fr.result);}catch(e){toast('Файл не похож на копию дневника.');return;}
+    if(!j||j.app!=='mama-diary'||!Array.isArray(j.entries)){toast('Файл не похож на копию дневника.');return;}
+    var ch=Promise.resolve(),n=0;
+    function put(c,id,data){ch=ch.then(function(){return Store.set(c,id,data);});}
+    if(j.profile){var pf=Object.assign({},j.profile);delete pf.id;put('meta','profile',pf);}
+    ['entries','foods','kicks','weights','questions','visits','names','bagc'].forEach(function(c){(j[c]||[]).forEach(function(x){if(!x||!x.id)return;var d=Object.assign({},x);delete d.id;put(c,x.id,d);if(c==='entries')n++;});});
+    Object.keys(j.checks||{}).forEach(function(id){var d=Object.assign({},j.checks[id]);delete d.id;put('checks',id,d);});
+    Object.keys(j.photos||{}).forEach(function(id){var q=j.photos[id];var d=typeof q==='string'?{data:q,thumb:''}:{data:q&&q.data,thumb:(q&&q.thumb)||''};if(d.data){photoCache.delete(id);put('photos',id,d);}});
+    ch.then(function(){S.sheet=null;renderSheet();toast('Восстановлено записей: '+n);}).catch(function(){toast('Не удалось восстановить.');});
+  };
+  fr.onerror=function(){toast('Не удалось прочитать файл.');};
+  fr.readAsText(file);
+}
+
+/* ---------- events ---------- */
+function scrollTop(){try{window.scrollTo(0,0);}catch(e){}}
+document.addEventListener('click',function(ev){
+  if(S.fab&&!ev.target.closest('.fab-wrap')){S.fab=false;renderTabs();}
+  var t=ev.target.closest('[data-act]');if(!t)return;
+  var a=t.getAttribute('data-act'),v=t.getAttribute('data-v');
+  if(S.fab&&a!=='fab'){S.fab=false;renderTabs();}
+  if(a==='sheet-bg'){if(ev.target!==t)return;S.sheet=null;renderSheet();return;}
+  switch(a){
+    case 'tab':S.tab=v;S.tool=null;S.confirmDel=null;S.sheet=null;renderSheet();renderMain();renderTabs();scrollTop();break;
+    case 'settings':S.sheet={type:'settings'};renderSheet();break;
+    case 'sheet-close':S.sheet=null;renderSheet();break;
+    case 'onb-who':S.onb.who=v;renderMain();break;
+    case 'onb-save':onbSave();break;
+    case 'tick':S.viewIdx=parseInt(v,10);renderMain();break;
+    case 'tick-reset':S.viewIdx=null;renderMain();break;
+    case 'new-entry':openEntry(null);break;
+    case 'answer-prompt':var pl=prompts();openEntry(null,pl[dayNum()%pl.length]+'\n\n');break;
+    case 'edit-entry':openEntry(S.entries.filter(function(x){return x.id===v;})[0]);break;
+    case 'del-entry':deleteEntry(v);break;
+    case 'mood':syncEntryFields();S.sheet.data.mood=(S.sheet.data.mood===parseInt(v,10)?null:parseInt(v,10));renderSheet();break;
+    case 'prompt-next':syncEntryFields();S.sheet.data.pi++;renderSheet();break;
+    case 'tag':syncEntryFields();var d=S.sheet.data;var k=d.tags.indexOf(v);if(k>=0)d.tags.splice(k,1);else d.tags.push(v);renderSheet();break;
+    case 'photo-rm':syncEntryFields();var dd=S.sheet.data;var ph=dd.photos.splice(parseInt(v,10),1)[0];if(ph&&ph.id)dd.removed.push(ph.id);renderSheet();break;
+    case 'entry-save':saveEntry();break;
+    case 'tag-filter':S.tagFilter=v||null;renderMain();break;
+    case 'who':S.healthWho=v;S.openItem=null;renderMain();break;
+    case 'open-item':S.openItem=(S.openItem===v?null:v);renderMain();break;
+    case 'goto-health':var it=HEALTH.filter(function(x){return x.id===v;})[0];S.healthWho=it.who;S.openItem=v;S.tab='health';renderMain();renderTabs();scrollTop();break;
+    case 'goto-feed':S.tab='feed';renderMain();renderTabs();scrollTop();break;
+    case 'stage':S.feedStage=parseInt(v,10);renderMain();break;
+    case 'form':S.sheet={type:'form',kind:v,extra:v==='weight'?{who:S.weightWho||(isBabyPhase()?'baby':'mom')}:null};renderSheet();break;
+    case 'form-save':formSave();break;
+    case 'del-food':genericDel('foods',v);break;
+    case 'open-tool':S.tab='more';S.tool=v;S.confirmDel=null;renderMain();renderTabs();scrollTop();break;
+    case 'tool-back':S.tool=null;S.confirmDel=null;renderMain();scrollTop();break;
+    case 'kick':kickAdd(1);break;
+    case 'kick-undo':kickAdd(-1);break;
+    case 'wwho':S.weightWho=v;renderMain();break;
+    case 'del-weight':genericDel('weights',v);break;
+    case 'labor':laborToggle();break;
+    case 'labor-reset':C.running=false;C.list=[];C.cur=null;renderMain();break;
+    case 'del-bagc':genericDel('bagc',v);break;
+    case 'del-q':genericDel('questions',v);break;
+    case 'del-visit':genericDel('visits',v);break;
+    case 'del-name':genericDel('names',v);break;
+    case 'vote':
+      var nm=S.names.filter(function(x){return x.id===v;})[0];if(!nm)break;
+      var vt=(nm.votes||[]).slice(),who=t.getAttribute('data-w')||'mom',ix=vt.indexOf(who);if(ix>=0)vt.splice(ix,1);else vt.push(who);
+      nm.votes=vt;renderMain();if(vt.length>=2){hearts(18);toast('Мы думаем одинаково 💞');}
+      Store.set('names',v,{name:nm.name,note:nm.note||'',votes:vt}).catch(function(){toast('Не удалось сохранить голос.');});break;
+    case 'brand':
+      brandTaps++;clearTimeout(brandT);brandT=setTimeout(function(){brandTaps=0;},3000);
+      if(brandTaps>=5){brandTaps=0;hearts(34);S.sheet={type:'letter',title:'Для самой лучшей мамы 💗',text:(L().letter||'').trim()||'Ты самое лучшее, что случилось со мной.\nСпасибо, что ты мама нашего малыша.\nЯ люблю тебя больше, чем умею сказать.'};renderSheet();}
+      break;
+    case 'foot':
+      footTaps++;clearTimeout(footT);footT=setTimeout(function(){footTaps=0;},4000);
+      if(footTaps>=5){footTaps=0;var lv=JSON.parse(JSON.stringify(L()));delete lv.id;lv.notes=lv.notes||[];S.sheet={type:'papa',data:lv};renderSheet();}
+      break;
+    case 'fruit':loveToast();break;
+    case 'big':var on=document.documentElement.classList.toggle('big');lsSet('md-big',on?'1':'0');if(S.sheet&&S.sheet.type==='settings')renderSheet();break;
+    case 'fab':S.fab=!S.fab;renderTabs();break;
+    case 'quick-photo':var qf=document.getElementById('qp-file');if(qf)qf.click();break;
+    case 'quick-kick':kickAdd(1);toast('👣 Сегодня шевелений: '+kickToday());break;
+    case 'lb':var le=S.entries.filter(function(x){return x.id===v;})[0];if(le)openLb(entryPhotoList(le),parseInt(t.getAttribute('data-i'),10)||0);break;
+    case 'lb-album':openLb(S.albumList,parseInt(v,10));break;
+    case 'lb-close':closeLb();break;
+    case 'lb-bg':if(ev.target===t)closeLb();break;
+    case 'lb-prev':navLb(-1);break;
+    case 'lb-next':navLb(1);break;
+    case 'fav':toggleFav(v);break;
+    case 'fav-filter':S.fav=!S.fav;renderMain();break;
+    case 'dview':S.dview=v;renderMain();break;
+    case 'papa-note-add':
+      readPapa();var nd=$('#pn-date').value,nt=($('#pn-text').value||'').trim();
+      if(!nd||!nt){toast('Укажи дату и текст записки.');break;}
+      S.sheet.data.notes=(S.sheet.data.notes||[]).concat([{id:uid(),date:nd,text:nt}]);renderSheet();break;
+    case 'papa-note-del':readPapa();S.sheet.data.notes=(S.sheet.data.notes||[]).filter(function(n){return n.id!==v;});renderSheet();break;
+    case 'papa-save':papaSave();break;
+    case 'papa-export':papaExport();break;
+    case 'hide-install':lsSet('md-ih','1');renderMain();break;
+    case 'backup-now':exportJson();break;
+    case 'settings-save':settingsSave();break;
+    case 'export-md':exportMd();break;
+  }
+});
+document.addEventListener('change',function(ev){
+  var t=ev.target;
+  if(t.id==='imp-file'){importFile(t.files&&t.files[0]);t.value='';return;}
+  if(t.id==='e-file'){
+    var s=S.sheet;if(!s)return;
+    var files=Array.prototype.slice.call(t.files||[]);
+    var room=6-s.data.photos.length;
+    if(files.length>room){toast('Максимум 6 фото на запись.');files=files.slice(0,Math.max(room,0));}
+    syncEntryFields();
+    var chain=Promise.resolve();
+    compressMany(files).then(function(arr){arr.forEach(function(x){s.data.photos.push(x);});if(S.sheet===s)renderSheet();});
+    return;
+  }
+  if(t.id==='qp-file'){
+    var qs=Array.prototype.slice.call(t.files||[]).slice(0,6);
+    if(!qs.length)return;
+    toast('Готовим фото…');
+    compressMany(qs).then(function(arr){t.value='';if(arr.length)openEntry(null,'',arr);});
+    return;
+  }
+  var g=t.getAttribute&&t.getAttribute('data-field');
+  if(g){saveCheck(t.getAttribute('data-id'),g,g==='done'?t.checked:t.value);return;}
+  var b=t.getAttribute&&t.getAttribute('data-bag');
+  if(b){saveCheck('bag_'+b,'done',t.checked);bagDone();return;}
+  var ms=t.getAttribute&&t.getAttribute('data-ms');
+  if(ms){saveCheck('ms_'+ms,'done',t.checked);return;}
+  var bc=t.getAttribute&&t.getAttribute('data-bagc');
+  if(bc){var r=S.bagc.filter(function(x){return x.id===bc;})[0];if(r){r.done=t.checked;Store.set('bagc',bc,{text:r.text,done:t.checked}).catch(function(){toast('Не удалось сохранить.');});renderMain();bagDone();}return;}
+  var q=t.getAttribute&&t.getAttribute('data-q');
+  if(q){var qq=S.questions.filter(function(x){return x.id===q;})[0];if(qq){qq.done=t.checked;Store.set('questions',q,{text:qq.text,done:t.checked,created:qq.created||0}).catch(function(){toast('Не удалось сохранить.');});renderMain();}}
+});
+
+var draftT=null;
+document.addEventListener('input',function(ev){
+  var t=ev.target;
+  if(t.id==='d-q'){S.q=t.value;var el=document.getElementById('dlist');if(el){el.innerHTML=diaryListHtml();hydratePhotos();}return;}
+  if(t.id==='e-text'||t.id==='e-date'||t.id==='e-seal'){clearTimeout(draftT);draftT=setTimeout(saveDraft,400);}
+});
+document.addEventListener('keydown',function(ev){
+  if(!S.lb)return;
+  if(ev.key==='Escape')closeLb();else if(ev.key==='ArrowRight')navLb(1);else if(ev.key==='ArrowLeft')navLb(-1);
+});
+var tx0=null;
+document.addEventListener('touchstart',function(e){if(S.lb&&e.touches.length===1)tx0=e.touches[0].clientX;},{passive:true});
+document.addEventListener('touchend',function(e){if(S.lb&&tx0!=null){var dx=e.changedTouches[0].clientX-tx0;tx0=null;if(Math.abs(dx)>50)navLb(dx<0?1:-1);}},{passive:true});
+
+/* ---------- boot ---------- */
+function startWatchers(){
+  Store.watch('meta',function(list){
+    var p=list.filter(function(x){return x.id==='profile';})[0];
+    S.profile=p||null;S.loveL=list.filter(function(x){return x.id==='love';})[0]||null;S.loveR=list.filter(function(x){return x.id==='loveRemote';})[0]||null;S.love=S.loveL||S.loveR||null;S.booting=false;renderAll();
+  });
+  Store.watch('entries',function(list){
+    S.entries=list.sort(function(a,b){return a.date<b.date?1:a.date>b.date?-1:(b.updated||0)-(a.updated||0);});
+    refresh();
+  });
+  Store.watch('checks',function(list){var m={};list.forEach(function(x){m[x.id]=x;});S.checks=m;refresh();});
+  Store.watch('foods',function(list){S.foods=list.sort(function(a,b){return a.date<b.date?1:-1;});refresh();});
+  ['kicks','weights','questions','visits','names','bagc'].forEach(function(c){
+    Store.watch(c,function(list){S[c]=list;refresh();});
+  });
+}
+function loadRemoteLove(){
+  try{
+    fetch('love.json?'+Date.now(),{cache:'no-store'}).then(function(r){return r.ok?r.json():null;}).then(function(j){
+      if(j&&typeof j==='object'&&!Array.isArray(j))Store.set('meta','loveRemote',j).catch(function(){});
+    }).catch(function(){});
+  }catch(e){}
+}
+function boot(){
+  if(lsGet('md-big')==='1')document.documentElement.classList.add('big');
+  renderAll();
+  Store.initLocal().then(function(){
+    startWatchers();
+    try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist();}catch(e){}
+    loadRemoteLove();
+    try{if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(function(){});}catch(e){}
+  });
+}
+boot();
+})();
+</script>
+</body>
+</html>
